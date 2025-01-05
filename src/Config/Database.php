@@ -89,25 +89,29 @@ class Database
         try {
             $pdo = new PDO($dns, $username);
 
+            
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+            
             $sql_file = __DIR__ . '/tables.sql';
-
+            
             $sql = file_get_contents($sql_file);
-           
 
+            
             if ($sql === false) {
                 throw new Exception("Error ao ler sql");
             }
-
+            
             $queries = explode(";", $sql);
+            
+            
 
             foreach ($queries as $query) {
                 $query = trim($query);
                 if ($query) {
                     preg_match('/`([^`]*)`/', $query, $matches);
                     $tablename = $matches[0];
-                    if ($this->tableExists($pdo, $tablename)) {
+                    if (!$this->tableExists($pdo, $tablename)) {
+                        var_dump($this->tableExists($pdo, $tablename));
                         $pdo->exec($query);
                     }
                 }
@@ -138,9 +142,12 @@ class Database
     }
 
     private function tableExists($pdo, $tablename){
+
+        $tablename = trim($tablename, '`');
+        
         try {
-            $result = $pdo->query("SHOW TABLES LIKE '$tablename'");
-            return $result->rowCount() > 0;
+            $result = $pdo->query("SELECT 1 FROM $tablename LIMIT 1");
+            return $result;
         } catch (PDOException $e) {
             return false;
         }

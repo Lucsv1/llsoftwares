@@ -16,7 +16,7 @@ class User implements UserInterface{
     private $password;
 
     /**
-     * @var array
+     * @var array   
      */
     private $roles = [];
 

@@ -1,8 +1,11 @@
 <?php
 
+namespace Admin\Project\Controllers;
+
+use Admin\Project\Models\Clients;
+
 class ClientsControllers
 {
-    private $db;
 
     private $nameClients;
 
@@ -14,9 +17,11 @@ class ClientsControllers
 
     private $addressClients;
 
+    private $emailClients;
+
     /**
      * Get the value of nameClients
-     */ 
+     */
     public function getNameClients()
     {
         return $this->nameClients;
@@ -26,7 +31,7 @@ class ClientsControllers
      * Set the value of nameClients
      *
      * @return  self
-     */ 
+     */
     public function setNameClients($nameClients)
     {
         $this->nameClients = $nameClients;
@@ -36,7 +41,7 @@ class ClientsControllers
 
     /**
      * Get the value of telephoneClients
-     */ 
+     */
     public function getTelephoneClients()
     {
         return $this->telephoneClients;
@@ -46,7 +51,7 @@ class ClientsControllers
      * Set the value of telephoneClients
      *
      * @return  self
-     */ 
+     */
     public function setTelephoneClients($telephoneClients)
     {
         $this->telephoneClients = $telephoneClients;
@@ -56,7 +61,7 @@ class ClientsControllers
 
     /**
      * Get the value of cpfClients
-     */ 
+     */
     public function getCpfClients()
     {
         return $this->cpfClients;
@@ -66,7 +71,7 @@ class ClientsControllers
      * Set the value of cpfClients
      *
      * @return  self
-     */ 
+     */
     public function setCpfClients($cpfClients)
     {
         $this->cpfClients = $cpfClients;
@@ -76,7 +81,7 @@ class ClientsControllers
 
     /**
      * Get the value of cepClients
-     */ 
+     */
     public function getCepClients()
     {
         return $this->cepClients;
@@ -86,7 +91,7 @@ class ClientsControllers
      * Set the value of cepClients
      *
      * @return  self
-     */ 
+     */
     public function setCepClients($cepClients)
     {
         $this->cepClients = $cepClients;
@@ -96,7 +101,7 @@ class ClientsControllers
 
     /**
      * Get the value of addressClients
-     */ 
+     */
     public function getAddressClients()
     {
         return $this->addressClients;
@@ -106,7 +111,7 @@ class ClientsControllers
      * Set the value of addressClients
      *
      * @return  self
-     */ 
+     */
     public function setAddressClients($addressClients)
     {
         $this->addressClients = $addressClients;
@@ -114,5 +119,93 @@ class ClientsControllers
         return $this;
     }
 
-    
+    /**
+     * Get the value of emailClients
+     */
+    public function getEmailClients()
+    {
+        return $this->emailClients;
+    }
+
+    /**
+     * Set the value of emailClients
+     *
+     * @return  self
+     */
+    public function setEmailClients($emailClients)
+    {
+        $this->emailClients = $emailClients;
+
+        return $this;
+    }
+
+    public function createClient()
+    {
+
+        $data_clients = [
+            'nameClient' => $this->getNameClients(),
+            'telephoneClient' => $this->getTelephoneClients(),
+            'cpfClients' => $this->getCpfClients(),
+            'cepClients' => $this->getCepClients(),
+            'addressClients' => $this->getAddressClients(),
+            'emailClients' => $this->getEmailClients()
+        ];
+
+        $clientsConfig = new Clients();
+
+        $clientsConfig->saveDatasClients($data_clients);
+    }
+
+    public function listClients()
+    {
+        $clientsConfig = new Clients();
+
+        $datas = $clientsConfig->getDatasClients();
+
+        if (empty($datas)) {
+            return false;
+        }
+
+        return $datas;
+    }
+
+    public function getClientsById($id){
+        
+        $clientsConfig = new Clients();
+
+        $datas = $clientsConfig->getDatasClientsById($id);
+
+        return $datas;
+
+    }
+
+    public function editClients($id){
+
+        $data_clients = [
+            'nameClient' => $this->getNameClients(),
+            'telephoneClient' => $this->getTelephoneClients(),
+            'cpfClients' => $this->getCpfClients(),
+            'cepClients' => $this->getCepClients(),
+            'addressClients' => $this->getAddressClients(),
+            'emailClients' => $this->getEmailClients()
+        ];
+
+        $clientsConfig = new Clients();
+
+        $clientsConfig->editDatasClients($id,$data_clients);
+
+    }
+
+    public function deleteClients($id)
+    {
+        $clientsConfig = new Clients();
+
+        $action = $clientsConfig->delDatasClients($id);
+
+        if (!$action) {
+            return "Erro ao Excluir o Cliente";
+        }
+
+        return "Cliente Excluido!!";
+    }
 }

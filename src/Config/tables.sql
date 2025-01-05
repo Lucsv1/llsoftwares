@@ -1,6 +1,6 @@
 CREATE TABLE
     `Users` (
-        ID INT PRIMARY KEY,
+        ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         Username VARCHAR(255),
         Password VARCHAR(255),
         Role JSON,
@@ -9,7 +9,7 @@ CREATE TABLE
     
 CREATE TABLE
     `Clientes` (
-        ID INT PRIMARY KEY,
+        ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         Nome_Completo VARCHAR(100) NOT NULL,
         Contato VARCHAR(15),
         CPF VARCHAR(11),
@@ -20,7 +20,7 @@ CREATE TABLE
 
 CREATE TABLE
     `Pedidos` (
-        ID_Pedido INT PRIMARY KEY,
+        ID_Pedido INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         ID_Cliente INT,
         Data DATE NOT NULL,
         Valor_Total DECIMAL(10, 2) NOT NULL,
@@ -29,14 +29,14 @@ CREATE TABLE
 
 CREATE TABLE
     `Produtos` (
-        ID_Produto INT PRIMARY KEY,
+        ID_Produto INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         Nome VARCHAR(100) NOT NULL,
         Preco DECIMAL(10, 2) NOT NULL
     );
 
 CREATE TABLE
     `Pagamentos` (
-        ID_Pagamento INT PRIMARY KEY,
+        ID_Pagamento INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         ID_Pedido INT,
         Data DATE NOT NULL,
         Metodo_Pagamento VARCHAR(50) NOT NULL,
