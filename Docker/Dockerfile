@@ -2,7 +2,9 @@ FROM php:8.2-apache
 
 WORKDIR /var/www/html
 
-COPY ../ .
+COPY . .
+
+COPY . /var/www/html
 
 RUN service apache2 restart
 

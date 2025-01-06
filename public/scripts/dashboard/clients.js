@@ -6,7 +6,7 @@ $(document).ready(function() {
     function deletarCliente(id) {
         if(confirm('Tem certeza que deseja excluir este cliente?')) {
             $.ajax({
-                url: '/projeto_futuro/clientes',
+                url: '/clientes',
                 method: 'POST',
                 data: { idDel: id },
                 success: function(response) {
@@ -100,7 +100,7 @@ $(document).ready(function() {
 
     $('.btn-edit').on('click', function() {
         const id = $(this).data('id');
-        window.location.href = '/projeto_futuro/clientes/editar?id=' + id;
+        window.location.href = '/clientes/editar?id=' + id;
         // editarCliente(id);
         console.log(id);
     });
@@ -113,7 +113,7 @@ $(document).ready(function() {
 
     function confirmDeletion() {
         if (confirm('Tem certeza que deseja excluir este cliente?')) {
-            window.location.href = '/projeto_futuro/delete_cliente?id=<?php echo $client->ID; ?>';
+            window.location.href = 'delete_cliente?id=<?php echo $client->ID; ?>';
         }
     }
 });

@@ -10,6 +10,7 @@ $userManager = new UserManager();
 $pdo = $db_config->auth_db();
 
 
+
 $msg_error = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['username']) || empty($_POST['password'])) {
@@ -30,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($userManager->isPasswordValid($user, $_POST['password'])) {
                 $userManager->createUserToken($user);
-                header("Location: /projeto_futuro/painel");
+                header("Location: /painel");
                 exit;
             } else {
                 $msg_error = "Nome de usuario ou senha incorretos";
@@ -41,10 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// if ($userManager->hasUserToken()) {
-//     header("Location: /projeto_futuro/painel");
-//     exit;
-// }
+if ($userManager->hasUserToken()) {
+    header("Location: /painel");
+    exit;
+}
 
 ?>
 
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="../../../projeto_futuro/public/styles/login.css">
+    <link rel="stylesheet" href="/../../../public/styles/login.css">
 </head>
 
 <body>

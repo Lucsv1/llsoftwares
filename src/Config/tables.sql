@@ -12,17 +12,18 @@ CREATE TABLE
         ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         Nome_Completo VARCHAR(100) NOT NULL,
         Contato VARCHAR(15),
-        CPF VARCHAR(11),
-        CEP VARCHAR(8),
+        CPF VARCHAR(14),
+        CEP VARCHAR(20),
         Endereco VARCHAR(255),
-        Email VARCHAR(100)
+        Email VARCHAR(100),
+        data DATETIME NULL DEFAULT current_timestamp()
     );
 
 CREATE TABLE
     `Pedidos` (
         ID_Pedido INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         ID_Cliente INT,
-        Data DATE NOT NULL,
+        Data DATETIME NULL DEFAULT current_timestamp(),
         Valor_Total DECIMAL(10, 2) NOT NULL,
         FOREIGN KEY (ID_Cliente) REFERENCES Clientes (ID)
     );

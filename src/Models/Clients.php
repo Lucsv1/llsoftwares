@@ -12,7 +12,7 @@ class Clients
     {
         $db = new Database();
         $pdo = $db->auth_db();
-        $stmt = $pdo->prepare("INSERT INTO clientes (Nome_completo, Contato, CPF, CEP, Endereco, Email) VALUES (:name, :telepone, :cpf, :cep, :address, :email)");
+        $stmt = $pdo->prepare("INSERT INTO Clientes (Nome_completo, Contato, CPF, CEP, Endereco, Email) VALUES (:name, :telepone, :cpf, :cep, :address, :email)");
 
         $stmt->bindParam(":name", $data['nameClient']);
         $stmt->bindParam(":telepone", $data['telephoneClient']);
@@ -31,7 +31,7 @@ class Clients
 
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->query("SELECT * FROM clientes");
+        $stmt = $pdo->query("SELECT * FROM  Clientes");
 
         if ($stmt->rowCount() < 0) {
             return;
@@ -49,7 +49,7 @@ class Clients
 
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("DELETE FROM clientes WHERE ID = :id");
+        $stmt = $pdo->prepare("DELETE FROM Clientes WHERE ID = :id");
 
         $stmt->bindParam(":id", $id);
 
@@ -62,7 +62,7 @@ class Clients
 
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("UPDATE clientes SET Nome_completo = :name, Contato = :telephone, CPF = :cpf, CEP = :cep, Endereco = :address, Email = :email WHERE ID = $id");
+        $stmt = $pdo->prepare("UPDATE Clientes SET Nome_completo = :name, Contato = :telephone, CPF = :cpf, CEP = :cep, Endereco = :address, Email = :email WHERE ID = $id");
 
         $stmt->bindParam(":name", $datas['nameClient']);
         $stmt->bindParam(":telephone", $datas['telephoneClient']);
@@ -79,7 +79,7 @@ class Clients
         $db = new Database();
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->query("SELECT * FROM clientes WHERE ID = $id");
+        $stmt = $pdo->query("SELECT * FROM Clientes WHERE ID = $id");
 
         if ($stmt->rowCount() < 0) {
             return;
