@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./Docker/Dockerfile
+    container_name: apache-app
+    ports:
+     - 80:80
+    depends_on:
+     - db
+    environment:
+      TZ: America/Sao_Paulo
+    restart: always
+  
+  db:
+    image: mariadb:10.5
+    container_name: mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - volume_register:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: lldb
+      MARIADB_USER: user_app
+      MARIADB_PASSWORD: password
+      MARIADB_ROOT_PASSWORD: password
+      TZ: America/Sao_Paulo
+    restart: always
+
+volumes:
+  volume_register:
+    external: true
