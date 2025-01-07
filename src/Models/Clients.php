@@ -12,7 +12,7 @@ class Clients
     {
         $db = new Database();
         $pdo = $db->auth_db();
-        $stmt = $pdo->prepare("INSERT INTO Clientes (Nome_completo, Contato, CPF, CEP, Endereco, Email) VALUES (:name, :telepone, :cpf, :cep, :address, :email)");
+        $stmt = $pdo->prepare("INSERT INTO Clientes (Nome_completo, Contato, CPF, CEP, Endereco, Email, Observacoes) VALUES (:name, :telepone, :cpf, :cep, :address, :email, :observacoes)");
 
         $stmt->bindParam(":name", $data['nameClient']);
         $stmt->bindParam(":telepone", $data['telephoneClient']);
@@ -20,6 +20,7 @@ class Clients
         $stmt->bindParam(":cep", $data['cepClients']);
         $stmt->bindParam(":address", $data['addressClients']);
         $stmt->bindParam(":email", $data['emailClients']);
+        $stmt->bindParam(":observacoes", $data['observation']);
 
         $stmt->execute();
     }

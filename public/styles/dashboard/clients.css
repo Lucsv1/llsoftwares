@@ -103,7 +103,8 @@ label {
 
 input[type="text"],
 input[type="email"],
-input[type="tel"] {
+input[type="tel"],
+textarea{
   width: 100%;
   padding: 0.8rem;
   border: 1px solid #ddd;
@@ -113,7 +114,8 @@ input[type="tel"] {
 
 input[type="text"]:focus,
 input[type="email"]:focus,
-input[type="tel"]:focus {
+input[type="tel"]:focus, 
+textarea:focus{
   outline: none;
   border-color: #6b7fd7;
   box-shadow: 0 0 5px rgba(107, 127, 215, 0.2);

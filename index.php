@@ -14,31 +14,34 @@ $inicializationDb->auth_db();
 
 
 switch ($request) {
-    case "/$base/":
+    case "/":
         require_once __DIR__ . '/src/Views/Login/login.view.php';
         exit;
-    case "/$base/painel":
+    case "/painel":
         require_once __DIR__ . '/src/Views/Dashboard/painel.view.php';
         exit;
-    case "/$base/clientes":
+    case "/clientes":
         require_once __DIR__ . '/src/Views/Dashboard/Clientes/clientes.view.php';
         exit;
-    case "/$base/clientes/editar":
+    case "/clientes/editar":
         require_once __DIR__ . '/src/Views/Dashboard/Clientes/ClientesEditar/clientesEditar.view.php';
         exit;
-    case "/$base/vendas":
+    case "/vendas":
         require_once __DIR__ . '/src/Views/Dashboard/Vendas/vendas.view.php';
         exit;
-    case "/$base/estoque":
+    case "/estoque":
         require_once __DIR__ . '/src/Views/Dashboard/Estoque/estoque.view.php';
         exit;
-    case "/$base/agendamento":
+    case "/estoque/editar":
+        require_once __DIR__ . '/src/Views/Dashboard/Estoque/EstoqueEditar/estoqueEditar.php';
+        exit;
+    case "/agendamento":
         require_once __DIR__ . '/src/Views/Dashboard/Agendamento/agendamento.view.php';
         exit;
-    case "/$base/relatorios":
+    case "/relatorios":
         require_once __DIR__ . '/src/Views/Dashboard/Relatorios/relatorios.view.php';
         exit;
-    case "/$base/funcionarios":
+    case "/funcionarios":
         require_once __DIR__ . '/src/Views/Dashboard/Funcionarios/funcionarios.view.php';
         exit;
 

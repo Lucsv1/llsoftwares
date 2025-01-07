@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
         ->setCepClients($_POST['cep'])
         ->setAddressClients($_POST['endereco'])
         ->setEmailClients($_POST['email'])
+        ->setObservation($_POST['observacao'])
         ->editClients($_GET['id']);
 
         header("Refresh:0");
@@ -40,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Cliente</title>
-    <link rel="stylesheet" href="../../../projeto_futuro/public/styles/dashboard/clients.css">
+    <link rel="stylesheet" href="../../../public/styles/dashboard/clients.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 
@@ -51,9 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
         </div>
 
         <div>
-            <form action="/projeto_futuro/clientes">
+            <form action="/clientes">
                 <button class="button_exit" type="submit">
-                    <span class="info_exit"><img src="../../../projeto_futuro/public/assets/seta.png" alt=""> Voltar para Clientes</span>
+                    <span class="info_exit"><img src="../../../public/assets/seta.png" alt=""> Voltar para Clientes</span>
                 </button>
             </form>
         </div>
@@ -65,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
                     <div class="infos_init">
                         <h2 class="form-title">Editar Informações do Cliente</h2>
                         <span><?php echo $msg_sucess?></span>
-                        <span><?php echo date("d/m/Y H:i:s", strtotime($client->data)); ?></span>
+                        <span><?php echo date("d/m/Y H:i:s", strtotime($client->Created_At)); ?></span>
                     </div>
                     <form action="" method="POST">
                         <div class="form-row">
@@ -104,16 +105,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
                             </div>
                         </div>
 
+                        <div class="form-column">
+                            <div class="form-group">
+                                <label for="endereco">Observação</label>
+                                <textarea type="text" id="observacao" name="observacao"><?php echo $client->Observacoes ?  htmlspecialchars($client->Observacoes) : "";?></textarea>
+                            </div>
+                        </div>
 
-
+                
                         <button type="submit" class="btn-submit">Atualizar Cliente</button>
                     </form>
                 <?php endforeach ?>
             </section>
         </div>
     </div>
-    <script src="../../../projeto_futuro/public/scripts/dashboard/edit/clientEdit.js"></script>
-    <script src="../../../projeto_futuro/public/scripts/dashboard/clients.js"></script>
+    <script src="../../../public/scripts/dashboard/edit/clientEdit.js"></script>
+    <script src="../../../public/scripts/dashboard/clients.js"></script>
 </body>
 
 </html>

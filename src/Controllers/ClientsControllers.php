@@ -19,6 +19,8 @@ class ClientsControllers
 
     private $emailClients;
 
+    private $observation;
+
     /**
      * Get the value of nameClients
      */
@@ -139,6 +141,25 @@ class ClientsControllers
         return $this;
     }
 
+    /**
+     * Get the value of observation
+     */
+    public function getObservation()
+    {
+        return $this->observation;
+    }
+
+    /**
+     * Set the value of observation
+     */
+    public function setObservation($observation): self
+    {
+        $this->observation = $observation;
+
+        return $this;
+    }
+
+
     public function createClient()
     {
 
@@ -148,7 +169,8 @@ class ClientsControllers
             'cpfClients' => $this->getCpfClients(),
             'cepClients' => $this->getCepClients(),
             'addressClients' => $this->getAddressClients(),
-            'emailClients' => $this->getEmailClients()
+            'emailClients' => $this->getEmailClients(),
+            'observation' =>$this->getObservation()
         ];
 
         $clientsConfig = new Clients();
@@ -169,8 +191,9 @@ class ClientsControllers
         return $datas;
     }
 
-    public function getClientsById($id){
-        
+    public function getClientsById($id)
+    {
+
         $clientsConfig = new Clients();
 
         $datas = $clientsConfig->getDatasClientsById($id);
@@ -179,7 +202,8 @@ class ClientsControllers
 
     }
 
-    public function editClients($id){
+    public function editClients($id)
+    {
 
         $data_clients = [
             'nameClient' => $this->getNameClients(),
@@ -192,7 +216,7 @@ class ClientsControllers
 
         $clientsConfig = new Clients();
 
-        $clientsConfig->editDatasClients($id,$data_clients);
+        $clientsConfig->editDatasClients($id, $data_clients);
 
     }
 
@@ -208,4 +232,6 @@ class ClientsControllers
 
         return "Cliente Excluido!!";
     }
+
+
 }

@@ -12,6 +12,8 @@ services:
      - db
     environment:
       TZ: America/Sao_Paulo
+    volumes:
+      - ./  :/var/www/html  # Mapeia a pasta local src para o diretório do Apache
     restart: always
   
   db:

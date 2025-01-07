@@ -18,9 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome_completo'])) {
         ->setCepClients($_POST['cep'])
         ->setAddressClients($_POST['endereco'])
         ->setEmailClients($_POST['email'])
+        ->setObservation($_POST['observacao'])
         ->createClient();
 
-    header("Location: /projeto_futuro/clientes");
+    header("Location: /clientes");
 }
 
 
@@ -43,7 +44,7 @@ if (isset($_POST['idDel'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes</title>
-    <link rel="stylesheet" href="../../../projeto_futuro/public/styles/dashboard/clients.css">
+    <link rel="stylesheet" href="../../../public/styles/dashboard/clients.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 
@@ -54,9 +55,10 @@ if (isset($_POST['idDel'])) {
         </div>
 
         <div>
-            <form action="/projeto_futuro/painel">
+            <form action="/painel">
                 <button class="button_exit" type="submit">
-                    <span class="info_exit"><img src="../../../projeto_futuro/public/assets/seta.png" alt=""> Voltar para o painel</span>
+                    <span class="info_exit"><img src="../../../public/assets/seta.png" alt=""> Voltar para o
+                        painel</span>
                 </button>
             </form>
         </div>
@@ -65,7 +67,7 @@ if (isset($_POST['idDel'])) {
             <!-- Formulário de Cadastro -->
             <section class="form-section">
                 <h2 class="form-title">Cadastrar Novo Cliente</h2>
-                <form action="" method="POST">
+                <form method="POST">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nome">Nome Completo*</label>
@@ -102,6 +104,13 @@ if (isset($_POST['idDel'])) {
                         </div>
                     </div>
 
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="endereco">Observação</label>
+                            <textarea type="text" id="observacao" name="observacao"></textarea>
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn-submit">Cadastrar Cliente</button>
                 </form>
             </section>
@@ -128,7 +137,7 @@ if (isset($_POST['idDel'])) {
                                     <td><?php echo htmlspecialchars($client->CPF); ?></td>
                                     <td><?php echo htmlspecialchars($client->Contato); ?></td>
                                     <td class="action-buttons">
-                                        <button class="btn-edit" data-id="<?php echo $client->ID ?>">Editar</button>
+                                        <button class="btn-edit" data-id="<?php echo $client->ID ?>">Visualizar/Editar</button>
                                         <button class="btn-delete" data-id="<?php echo $client->ID; ?>">Excluir</button>
                                     </td>
                                 </tr>
@@ -139,7 +148,7 @@ if (isset($_POST['idDel'])) {
             </section>
         </div>
     </div>
-    <script src="../../../projeto_futuro/public/scripts/dashboard/clients.js"></script>
+    <script src="../../../public/scripts/dashboard/clients.js"></script>
 </body>
 
 </html>

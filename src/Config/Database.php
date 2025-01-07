@@ -14,9 +14,9 @@ class Database
 
     public function __construct()
     {
-        $this->setDsn('mysql:host=127.0.0.1;dbname=projeto_futuro');
-        $this->setUser('root');
-        $this->setPassword('');
+        $this->setDsn('mysql:host=db;dbname=lldb');
+        $this->setUser('user_app');
+        $this->setPassword('password');
     }
 
     /**
@@ -87,7 +87,7 @@ class Database
         $password = $this->getPassword();
 
         try {
-            $pdo = new PDO($dns, $username);
+            $pdo = new PDO($dns, $username, $password);
 
             
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
