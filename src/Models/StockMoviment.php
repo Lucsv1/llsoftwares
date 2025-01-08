@@ -62,11 +62,11 @@ class StockMoviment
 
         $stmt = $pdo->prepare("UPDATE Movimentacao_Estoque SET ID_Produto = :idProduto, ID_Usuario = :idUser, Tipo = :tipo, Quantidade = :quantidade, Motivo = :motivo WHERE ID_Movimentacao = $id");
 
-        $stmt->bindParam(":idProduto", $datas['nameProduct']);
-        $stmt->bindParam(":idUser", $datas['descriptionProduct']);
-        $stmt->bindParam(":tipo", $datas['priceProduct']);
-        $stmt->bindParam(":quantidade", $datas['quantityStorage']);
-        $stmt->bindParam(":motivo", $datas['statusProduct']);
+        $stmt->bindParam(":idProduto", $datas['idProduct']);
+        $stmt->bindParam(":idUser", $datas['idUser']);
+        $stmt->bindParam(":tipo", $datas['typeStock']);
+        $stmt->bindParam(":quantidade", $datas['quantityStock']);
+        $stmt->bindParam(":motivo", $datas['ObservationStock']);
 
         $stmt->execute();
     }
