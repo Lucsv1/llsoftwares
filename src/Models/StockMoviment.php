@@ -5,32 +5,32 @@ namespace Admin\Project\Models;
 use Admin\Project\Config\Database;
 use PDO;
 
-class Products
+class StockMoviment
 {
 
-
-    public function saveDatasProducts($data)
+    public function saveDatasStockMoviment($data)
     {
         $db = new Database();
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("INSERT INTO Produtos (Nome, Descricao, Preco, Quantidade_Estoque) VALUES (:nome, :descricao, :preco, :quantidade)");
+        $stmt = $pdo->prepare("INSERT INTO Movimentacao_Estoque (ID_Produto, ID_Usuario, Tipo, Quantidade, Motivo) VALUES (:idProduto, :idUser, :tipo, :quantidade :motivo)");
 
-        $stmt->bindParam(":nome", $data['nameProduct']);
-        $stmt->bindParam(":descricao", $data['descriptionProduct']);
-        $stmt->bindParam(":quantidade", $data['quantityStorage']);
-        $stmt->bindParam(":preco", $data['priceProduct']);
+        $stmt->bindParam(":idProduto", $data['idProduct']);
+        $stmt->bindParam(":idUser", $data['idUser']);
+        $stmt->bindParam(":tipo", $data['typeStock']);
+        $stmt->bindParam(":quantidade", $data['quantityStock']);
+        $stmt->bindParam(":motivo", $data['ObservationStock']);
 
         $stmt->execute();
     }
 
-    public function getDatasProducts()
+    public function getDatasStockMoviment()
     {
         $db = new Database();
 
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->query("SELECT * FROM Produtos");
+        $stmt = $pdo->query("SELECT * FROM Movimentacao_Estoque");
 
         if ($stmt->rowCount() < 0) {
             return;
@@ -41,7 +41,7 @@ class Products
         return $data;
     }
 
-    public function delDatasProducts($id)
+    public function delDatasStock($id)
     {
         $db = new Database();
 
@@ -52,7 +52,6 @@ class Products
         $stmt->bindParam(":id", $id);
 
         $stmt->execute();
-
     }
 
     public function editDatasProducts($id, $datas)
@@ -61,17 +60,18 @@ class Products
 
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("UPDATE Produtos SET Nome = :nome, Descricao = :descricao, Preco = :preco, Quantidade_Estoque = :quantidade, Status = :status WHERE ID_Produto = $id");
+        $stmt = $pdo->prepare("UPDATE Movimentacao_Estoque SET ID_Produto = :idProduto, ID_Usuario = :idUser, Tipo = :tipo, Quantidade = :quantidade, Motivo = :motivo WHERE ID_Movimentacao = $id");
 
-        $stmt->bindParam(":nome", $datas['nameProduct']);
-        $stmt->bindParam(":descricao", $datas['descriptionProduct']);
-        $stmt->bindParam(":preco", $datas['priceProduct']);
+        $stmt->bindParam(":idProduto", $datas['nameProduct']);
+        $stmt->bindParam(":idUser", $datas['descriptionProduct']);
+        $stmt->bindParam(":tipo", $datas['priceProduct']);
         $stmt->bindParam(":quantidade", $datas['quantityStorage']);
-        $stmt->bindParam(":status", $datas['statusProduct']);
+        $stmt->bindParam(":motivo", $datas['statusProduct']);
 
         $stmt->execute();
     }
 
+    
     public function getDatasProductsById($id)
     {
         $db = new Database();
@@ -87,5 +87,6 @@ class Products
 
         return $data;
     }
+
 
 }

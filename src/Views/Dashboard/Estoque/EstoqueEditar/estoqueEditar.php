@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ProductsController;
@@ -12,7 +12,20 @@ if (!isset($_GET['id'])) {
     return;
 }
 
-$
+$products = $productsController->getProductsById($_GET['id']);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
+    $productsController
+        ->setNameProduct($_POST['nome'])
+        ->setDescriptionProduct($_POST['descricao'])
+        ->setQuantityStorage($_POST['quantidade_estoque'])
+        ->setPriceProduct($_POST['preco'])
+        ->setStatusProduct($_POST['status'])
+        ->editProducts($_GET['id']);
+
+    header("Refresh:0");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,73 +56,73 @@ $
 
         <div class="content">
             <section class="form-section">
-                <?php foreach($products as $product): ?>
-                <h2 class="form-title">Dados do Produto</h2>
-                <form action="" method="POST">
-                    <input type="hidden" name="id_produto" value="<?php echo $product->ID_Produto; ?>">
+                <?php foreach ($products as $product): ?>
+                    <h2 class="form-title">Dados do Produto</h2>
+                    <form action="" method="POST">
+                        <input type="hidden" name="id_produto" value="<?php echo $product->ID_Produto; ?>">
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nome">Nome do Produto*</label>
-                            <input type="text" id="nome" name="nome"
-                                value="<?php echo htmlspecialchars($product->Nome); ?>" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome">Nome do Produto*</label>
+                                <input type="text" id="nome" name="nome"
+                                    value="<?php echo htmlspecialchars($product->Nome); ?>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="preco">Preço Unitário*</label>
+                                <input type="number" id="preco" name="preco" step="0.01" min="0"
+                                    value="<?php echo $product->Preco; ?>" required>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="preco">Preço Unitário*</label>
-                            <input type="number" id="preco" name="preco" step="0.01" min="0"
-                                value="<?php echo $product->Preco; ?>" required>
-                        </div>
-                    </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="quantidade">Quantidade em Estoque*</label>
+                                <input type="number" id="quantidade" name="quantidade_estoque" min="0"
+                                    value="<?php echo $product->Quantidade_Estoque; ?>" required>
+                            </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="quantidade">Quantidade em Estoque*</label>
-                            <input type="number" id="quantidade" name="quantidade_estoque" min="0"
-                                value="<?php echo $product->Quantidade_Estoque; ?>" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="estoque_minimo">Estoque Mínimo</label>
-                            <input type="number" id="estoque_minimo" name="estoque_minimo" min="0"
-                                value="<?php echo $product->Estoque_Minimo; ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="preco_custo">Preço de Custo</label>
-                            <input type="number" id="preco_custo" name="preco_custo" step="0.01" min="0"
-                                value="<?php echo $product->Preco_Custo; ?>">
+                            <div class="form-group">
+                                <label for="estoque_minimo">Estoque Mínimo</label>
+                                <input type="number" id="estoque_minimo" name="estoque_minimo" min="0"
+                                    value="<?php echo $product->Estoque_Minimo; ?>">
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="codigo_barras">Código de Barras</label>
-                            <input type="text" id="codigo_barras" name="codigo_barras"
-                                value="<?php echo htmlspecialchars($product->Codigo_Barras); ?>">
-                        </div>
-                    </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="preco_custo">Preço de Custo</label>
+                                <input type="number" id="preco_custo" name="preco_custo" step="0.01" min="0"
+                                    value="<?php echo $product->Preco_Custo; ?>">
+                            </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="descricao">Descrição do Produto</label>
-                            <textarea id="descricao" name="descricao"
-                                rows="3"><?php echo htmlspecialchars($product->Descricao); ?></textarea>
+                            <!-- <div class="form-group">
+                                <label for="codigo_barras">Código de Barras</label>
+                                <input type="text" id="codigo_barras" name="codigo_barras"
+                                    value="<?php // echo htmlspecialchars($product->Codigo_Barras); ?>">
+                            </div> -->
                         </div>
-                    </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="status">Status do Produto</label>
-                            <select id="status" name="status">
-                                <option value="Ativo" <?php echo $product->Status == 'Ativo' ? 'selected' : ''; ?>>Ativo
-                                </option>
-                                <option value="Inativo" <?php echo $product->Status == 'Inativo' ? 'selected' : ''; ?>>
-                                    Inativo</option>
-                                <option value="Sem_Estoque" <?php echo $product->Status == 'Sem_Estoque' ? 'selected' : ''; ?>>Sem Estoque</option>
-                            </select>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="descricao">Descrição do Produto</label>
+                                <textarea id="descricao" name="descricao"
+                                    rows="3"><?php echo htmlspecialchars($product->Descricao); ?></textarea>
+                            </div>
                         </div>
-                    </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="status">Status do Produto</label>
+                                <select id="status" name="status">
+                                    <option value="Ativo" <?php echo $product->Status == 'Ativo' ? 'selected' : ''; ?>>Ativo
+                                    </option>
+                                    <option value="Inativo" <?php echo $product->Status == 'Inativo' ? 'selected' : ''; ?>>
+                                        Inativo</option>
+                                    <option value="Sem_Estoque" <?php echo $product->Status == 'Sem_Estoque' ? 'selected' : ''; ?>>Sem Estoque</option>
+                                </select>
+                            </div>
+                        </div>
                     <?php endforeach ?>
 
                     <!-- Seção de Movimentação de Estoque -->

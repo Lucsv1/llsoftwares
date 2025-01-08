@@ -224,13 +224,8 @@ class ClientsControllers
     {
         $clientsConfig = new Clients();
 
-        $action = $clientsConfig->delDatasClients($id);
+        $clientsConfig->delDatasClients($id);
 
-        if (!$action) {
-            return "Erro ao Excluir o Cliente";
-        }
-
-        return "Cliente Excluido!!";
     }
 
 

@@ -34,9 +34,6 @@ $(document).ready(function() {
                 method: 'POST',
                 data: { idDel: id },
                 success: function(response) {
-                    $(`tr[data-id="${id}"]`).fadeOut(400, function() {
-                        $(this).remove();
-                    });
                     alert('Produto removido com sucesso!');
                     window.location.reload();
                 },

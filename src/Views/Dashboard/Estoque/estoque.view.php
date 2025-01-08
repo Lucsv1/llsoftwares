@@ -23,6 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'])) {
 
 $products = $productsController->listProducts();
 
+
+if(isset($_POST['idDel'])){
+    $productsController->deleteProducts($_POST['idDel']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -54,11 +59,11 @@ $products = $productsController->listProducts();
         <div class="content">
             <!-- Formulário de Cadastro de Produtos -->
             <section class="form-section">
-                <h2 class="form-title">Cadastrar Novo Produto</h2>
+                <h2 class="form-title">Cadastrar Novo Produto/Serviço</h2>
                 <form action="" method="POST">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="nome">Nome do Produto*</label>
+                            <label for="nome">Nome do Produto/Serviço*</label>
                             <input type="text" id="nome" name="nome" required>
                         </div>
 
@@ -95,20 +100,29 @@ $products = $productsController->listProducts();
                             <th>Nome</th>
                             <th>Preço Unit.</th>
                             <th>Qtd. Estoque</th>
+                            <th>Status</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (isset($products)): ?>
+                        <?php if ($products): ?>
                             <?php foreach ($products as $product): ?>
                                 <tr>
                                     <td><?php echo htmlspecialchars($product->Nome); ?></td>
                                     <td>R$ <?php echo number_format($product->Preco, 2, ',', '.'); ?></td>
-                                    <td class="quantidade-cell <?php echo $product->Quantidade < 10 ? 'baixo-estoque' : ''; ?>">
-                                        <?php echo $product->Quantidade_Estoque; ?>
-                                    </td>
+                                    <?php if ($product->Status !== "Sem_Estoque"): ?>
+                                        <td class="quantidade-cell <?php echo $product->Quantidade < 10 ? 'baixo-estoque' : ''; ?>">
+                                            <?php echo $product->Quantidade_Estoque; ?>
+                                        </td>
+                                    <?php else: ?>
+                                        <td class="quantidade-cell">
+                                            Sem Estoque
+                                        </td>
+                                    <?php endif ?>
+                                    <td> <?php echo str_replace("_"," ",$product->Status) ?></td>
                                     <td class="action-buttons">
-                                        <button class="btn-edit" data-id="<?php echo $product->ID_Produto; ?>">Editar</button>
+                                        <button class="btn-edit"
+                                            data-id="<?php echo $product->ID_Produto; ?>">Visualizar/Editar</button>
                                         <button class="btn-delete"
                                             data-id="<?php echo $product->ID_Produto; ?>">Excluir</button>
                                     </td>
