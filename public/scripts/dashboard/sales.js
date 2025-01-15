@@ -1,0 +1,1 @@
+document.getElementById('cliente').addEventListener('change', function () { var clienteId = this.value; document.getElementById('cliente-id').value = clienteId; });

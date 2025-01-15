@@ -2,19 +2,38 @@
 
 use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ClientsControllers;
+use Admin\Project\Controllers\OrdersControllers;
+use Admin\Project\Controllers\ProductsController;
 
 $userManager = new UserManager();
-$clientesController = new ClientsControllers;
+$clientesController = new ClientsControllers();
+$productsController = new ProductsController();
+$orderController = new OrdersControllers();
+$ordersProductsController = new OrdersProductsControllers();
+
 
 header("Cache-Control: no-cache, must-revalidate");
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cliente-id'])) {
+    $orderController
+    ->setIdClient($_POST['cliente-id'])
+    ->setPrice($_POST['total'])
+    ->createOrders();
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+}
+
 $clients = $clientesController->listClients();
+$products = $productsController->listProducts();
 
 
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +41,7 @@ $clients = $clientesController->listClients();
     <link rel="stylesheet" href="/../../../public/styles/dashboard/sales.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -53,6 +73,9 @@ $clients = $clientesController->listClients();
                             </select>
                         </div>
                     </div>
+
+                    <!-- Campo oculto para armazenar o ID do cliente -->
+                    <input type="hidden" id="cliente-id" name="cliente-id">
 
                     <div class="produtos-container">
                         <div class="form-row produto-item">
@@ -98,6 +121,7 @@ $clients = $clientesController->listClients();
 
                     <button type="submit" class="btn-submit">Finalizar Venda</button>
                 </form>
+
             </section>
 
             <section class="table-section">
@@ -131,4 +155,5 @@ $clients = $clientesController->listClients();
     </div>
     <script src="../../../public/scripts/dashboard/sales.js"></script>
 </body>
+
 </html>

@@ -13,16 +13,17 @@ class StockMoviment
         $db = new Database();
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("INSERT INTO Movimentacao_Estoque (ID_Produto, ID_Usuario, Tipo, Quantidade, Motivo) VALUES (:idProduto, :idUser, :tipo, :quantidade :motivo)");
+        $stmt = $pdo->prepare("INSERT INTO Movimentacao_Estoque (ID_Produto, ID_Usuario, Tipo, Quantidade, Motivo) VALUES (:idProduto, :idUser, :tipo, :quantidade, :motivo)");
 
         $stmt->bindParam(":idProduto", $data['idProduct']);
         $stmt->bindParam(":idUser", $data['idUser']);
         $stmt->bindParam(":tipo", $data['typeStock']);
         $stmt->bindParam(":quantidade", $data['quantityStock']);
-        $stmt->bindParam(":motivo", $data['ObservationStock']);
+        $stmt->bindParam(":motivo", $data['observationStock']);
 
         $stmt->execute();
     }
+
 
     public function getDatasStockMoviment()
     {
@@ -47,14 +48,14 @@ class StockMoviment
 
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("DELETE FROM Produtos WHERE ID_Produto = :id");
+        $stmt = $pdo->prepare("DELETE FROM Movimentacao_Estoque WHERE ID_Produto = :id");
 
         $stmt->bindParam(":id", $id);
 
         $stmt->execute();
     }
 
-    public function editDatasProducts($id, $datas)
+    public function editDatasStock($id, $datas)
     {
         $db = new Database();
 
@@ -71,13 +72,13 @@ class StockMoviment
         $stmt->execute();
     }
 
-    
-    public function getDatasProductsById($id)
+
+    public function getDatasStockById($id)
     {
         $db = new Database();
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->query("SELECT * FROM Produtos WHERE ID_Produto = $id");
+        $stmt = $pdo->query("SELECT * FROM Movimentacao_Estoque WHERE ID_Produto = $id");
 
         if ($stmt->rowCount() < 0) {
             return;
@@ -87,6 +88,4 @@ class StockMoviment
 
         return $data;
     }
-
-
 }

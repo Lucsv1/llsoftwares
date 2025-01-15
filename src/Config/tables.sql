@@ -7,8 +7,7 @@ CREATE TABLE
         Active TINYINT (1)
     );
     
-Claro! Vou remover a tabela de Categorias e ajustar os relacionamentos. Aqui está a versão atualizada:
-sqlCopyCREATE TABLE `Users` (
+CREATE TABLE `Users` (
     ID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     Username VARCHAR(255) NOT NULL,
     Password VARCHAR(255) NOT NULL,

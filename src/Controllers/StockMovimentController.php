@@ -12,7 +12,7 @@ class StockMovimentController
     private $idUser;
     private $type;
     private $quantityStock;
-    private $ObservationStock;
+    private $observationStock;
 
 
     /**
@@ -88,19 +88,19 @@ class StockMovimentController
     }
 
     /**
-     * Get the value of ObservationStock
+     * Get the value of observationStock
      */
     public function getObservationStock()
     {
-        return $this->ObservationStock;
+        return $this->observationStock;
     }
 
     /**
-     * Set the value of ObservationStock
+     * Set the value of observationStock
      */
-    public function setObservationStock($ObservationStock): self
+    public function setObservationStock($observationStock): self
     {
-        $this->ObservationStock = $ObservationStock;
+        $this->observationStock = $observationStock;
 
         return $this;
     }
@@ -112,14 +112,52 @@ class StockMovimentController
             "idUser" => $this->getIdUser(),
             "typeStock" => $this->getType(),
             "quantityStock" => $this->getQuantityStock(),
-            "ObservationStock" => $this->getObservationStock()
+            "observationStock" => $this->getObservationStock()
         ];
 
         $stockConfig = new StockMoviment();
 
         $stockConfig->saveDatasStockMoviment($data_stock);
-        
     }
 
-    
+    public function listStockMovimentation()
+    {
+        $stockConfig = new StockMoviment();
+
+        $datas = $stockConfig->getDatasStockMoviment();
+
+        if (empty($datas)) {
+            return false;
+        }
+
+        return $datas;
+
+    }
+
+    public function getStockMovimentationById($id){
+        $stockConfig = new StockMoviment();
+
+        $datas = $stockConfig->getDatasStockById($id);
+
+        if (empty($datas)) {
+            return false;
+        }
+
+        return $datas;
+    }
+
+    public function  editStockMovimentation($id)
+    {
+        $data_stock = [
+            "idProduct" => $this->getIdProduct(),
+            "idUser" => $this->getIdUser(),
+            "typeStock" => $this->getType(),
+            "quantityStock" => $this->getQuantityStock(),
+            "observationStock" => $this->getObservationStock()
+        ];
+
+        $stockConfig = new StockMoviment();
+
+        $stockConfig->editDatasStock($id, $data_stock);
+    }
 }

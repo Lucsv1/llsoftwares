@@ -156,7 +156,7 @@ class ProductsController
 
         $productsConfig = new Products();
 
-        $productsConfig->delDatasProducts($id);
+        $productsConfig->delDatasProducts($id); 
 
     }
 

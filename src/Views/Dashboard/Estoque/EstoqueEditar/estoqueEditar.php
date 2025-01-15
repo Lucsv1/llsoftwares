@@ -2,9 +2,11 @@
 
 use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ProductsController;
+use Admin\Project\Controllers\StockMovimentController;
 
 $userManager = new UserManager();
 $productsController = new ProductsController();
+$stockController = new StockMovimentController();
 
 header("Cache-Control: no-cache, must-revalidate");
 
@@ -24,7 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
         ->editProducts($_GET['id']);
 
     header("Refresh:0");
+
+    if (isset($_POST['quantidade_movimentacao'])) {
+
+        $stockController
+            ->setIdProduct((int)$_GET['id'])
+            ->setIdUser(1)
+            ->setType($_POST['tipo_movimentacao'])
+            ->setQuantityStock($_POST['quantidade_movimentacao'])
+            ->setObservationStock($_POST['motivo'])
+            ->createStockMovimentation();
+    }
 }
+
+
+$movimentacoes = $stockController->getStockMovimentationById($_GET['id']);
+
 
 ?>
 
@@ -99,7 +116,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
                             <!-- <div class="form-group">
                                 <label for="codigo_barras">Código de Barras</label>
                                 <input type="text" id="codigo_barras" name="codigo_barras"
-                                    value="<?php // echo htmlspecialchars($product->Codigo_Barras); ?>">
+                                    value="<?php // echo htmlspecialchars($product->Codigo_Barras); 
+                                            ?>">
                             </div> -->
                         </div>
 
@@ -159,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
                         <button type="button" class="btn-delete"
                             onclick="window.location.href='/estoque'">Cancelar</button>
                     </div>
-                </form>
+                    </form>
             </section>
 
             <!-- Histórico de Movimentações -->
@@ -172,18 +190,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
                             <th>Tipo</th>
                             <th>Quantidade</th>
                             <th>Motivo</th>
-                            <th>Usuário</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (isset($movimentacoes)): ?>
+                        <?php if ($movimentacoes): ?>
                             <?php foreach ($movimentacoes as $movimentacao): ?>
                                 <tr>
                                     <td><?php echo date('d/m/Y H:i', strtotime($movimentacao->Data)); ?></td>
                                     <td><?php echo $movimentacao->Tipo; ?></td>
                                     <td><?php echo $movimentacao->Quantidade; ?></td>
                                     <td><?php echo htmlspecialchars($movimentacao->Motivo); ?></td>
-                                    <td><?php echo htmlspecialchars($movimentacao->Nome_Usuario); ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
