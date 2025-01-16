@@ -41,6 +41,7 @@ class OrdersControllers
     {
         $data_orders = [
             'idClient' => $this->getIdClient(),
+            'price' => $this->getPrice(),
         ];
 
         $orderConfig = new Orders();

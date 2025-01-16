@@ -4,6 +4,7 @@ use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ClientsControllers;
 use Admin\Project\Controllers\OrdersControllers;
 use Admin\Project\Controllers\OrdersProductsControllers;
+use Admin\Project\Controllers\PaymentsControllers;
 use Admin\Project\Controllers\ProductsController;
 
 $userManager = new UserManager();
@@ -11,6 +12,7 @@ $clientesController = new ClientsControllers();
 $productsController = new ProductsController();
 $orderController = new OrdersControllers();
 $ordersProductsController = new OrdersProductsControllers();
+$paymentsController = new PaymentsControllers();
 
 
 header("Cache-Control: no-cache, must-revalidate");
@@ -27,7 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Create the order first
-        $orderController->setIdClient($_POST['cliente-id']);
+        $orderController
+            ->setIdClient($_POST['cliente-id'])
+            ->setPrice($_POST['total']);
         $lastOrderId = $orderController->createOrders();
 
         if (!$lastOrderId) {
@@ -51,15 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ordersProductsController->createOrdersProducts();
         }
 
-        $orderController
-        ->setPrice()
-        ->editOrders($lastOrderId);
+        $paymentsController
+            ->setIdOrder($lastOrderId)
+            ->setMethod($_POST['metodo_pagamento'])
+            ->createPayments();
 
         // Redirect or show success message
-        header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
+        header("Refresh:0");
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
+        var_dump($error);
     }
 }
 
@@ -115,6 +121,8 @@ $ordersAll = $orderController->listOrders();
                         </div>
                     </div>
 
+                    <input type="hidden" id="cliente-id" name="cliente-id" value="">
+
                     <!-- Products container -->
                     <div class="produtos-container">
                         <div class="form-row produto-item">
@@ -132,6 +140,8 @@ $ordersAll = $orderController->listOrders();
                                     <?php endif; ?>
                                 </select>
                             </div>
+
+                            <input type="hidden" id="produto-id" name="produto-id" value="">
                             <div class="form-group">
                                 <label for="quantidade">Quantidade*</label>
                                 <input type="number" name="produtos[0][quantidade]"
@@ -182,16 +192,20 @@ $ordersAll = $orderController->listOrders();
                     <tbody>
                         <?php if ($ordersAll): ?>
                             <?php foreach ($ordersAll as $orders): ?>
-                                <tr>
-                                    <td><?php echo $orders->Nome_Cliente; ?></td>
+                                <?php $clients = $clientesController->getClientsById($orders->ID_Cliente); ?>
+                                <?php foreach ($clients as $client): ?>
+                                    <tr>
+                                        <td><?php echo $client->Nome_Completo; ?></td>
+                                    <?php endforeach; ?>
                                     <td><?php echo date('d/m/Y', strtotime($orders->Data)); ?></td>
-                                    <td>R$ <?php echo number_format($orders->Valor_Total, 2, ',', '.'); ?></td>
+                                    <td><?php echo $orders->Valor_Total; ?></td>
                                     <td class="action-buttons">
                                         <button class="btn-edit" data-id="<?php echo $orders->ID_Pedido; ?>">Detalhes</button>
                                     </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                                    </tr>
+
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                     </tbody>
                 </table>
             </section>

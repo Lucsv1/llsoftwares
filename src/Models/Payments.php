@@ -12,7 +12,7 @@ class Payments
         $db = new Database();   
         $pdo = $db->auth_db();  
 
-        $stmt = $pdo->prepare("INSERT INTO Pagamentos (ID_Pedido, Metodo) VALUES (:idPedido, :metodo)");
+        $stmt = $pdo->prepare("INSERT INTO Pagamentos (ID_Pedido, Metodo_Pagamento) VALUES (:idPedido, :metodo)");
 
         $stmt->bindParam(":idPedido", $data['idOrder']);
         $stmt->bindParam(":metodo", $data['method']);

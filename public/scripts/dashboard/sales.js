@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+    const selectCliente = document.getElementById('cliente');
+    const inputClienteId = document.getElementById('cliente-id');
+
+    // Adiciona o evento de change no select
+    selectCliente.addEventListener('change', function() {
+        inputClienteId.value = this.value;
+        console.log('Cliente ID:', inputClienteId.value); // Para debug
+    });
+
+    // Para garantir que o valor seja definido se já houver uma seleção
+    if (selectCliente.value) {
+        inputClienteId.value = selectCliente.value;
+    }
+
     const container = document.querySelector('.produtos-container');
     let productCount = 1;
 
