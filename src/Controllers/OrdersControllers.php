@@ -1,4 +1,5 @@
 <?php
+
 namespace Admin\Project\Controllers;
 
 use Admin\Project\Models\Orders;
@@ -40,12 +41,47 @@ class OrdersControllers
     {
         $data_orders = [
             'idClient' => $this->getIdClient(),
-            'price' => $this->getPrice()
         ];
 
         $orderConfig = new Orders();
 
-        $orderConfig->saveDatasOrders($data_orders);
+        $lastId = $orderConfig->saveDatasOrders($data_orders);
+
+        return $lastId;
+    }
+
+    public function listOrders()
+    {
+        $orderConfig = new Orders();
+
+        $datas = $orderConfig->getDatasOrders();
+
+        if (empty($datas)) {
+            return false;
+        }
+
+        return $datas;
+    }
+
+    public function getOrdersById($id)
+    {
+        $orderConfig = new Orders();
+
+        $datas = $orderConfig->getDatasOrdersById($id);
+
+        return $datas;
+    }
+
+    public function editOrders($id)
+    {
+
+        $orderConfig = new Orders();
+
+        $data_orders = [
+            'price' => $this->getPrice()
+        ];
+
+        $orderConfig->editDatasOrders($id, $data_orders);
     }
 
 

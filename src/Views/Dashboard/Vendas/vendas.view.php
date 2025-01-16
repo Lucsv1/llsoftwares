@@ -3,6 +3,7 @@
 use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ClientsControllers;
 use Admin\Project\Controllers\OrdersControllers;
+use Admin\Project\Controllers\OrdersProductsControllers;
 use Admin\Project\Controllers\ProductsController;
 
 $userManager = new UserManager();
@@ -14,19 +15,57 @@ $ordersProductsController = new OrdersProductsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cliente-id'])) {
-    $orderController
-    ->setIdClient($_POST['cliente-id'])
-    ->setPrice($_POST['total'])
-    ->createOrders();
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // Validate required fields
+        if (!isset($_POST['cliente-id']) || empty($_POST['cliente-id'])) {
+            throw new Exception("Cliente não selecionado");
+        }
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if (!isset($_POST['produtos']) || !is_array($_POST['produtos']) || empty($_POST['produtos'])) {
+            throw new Exception("Nenhum produto selecionado");
+        }
 
+        // Create the order first
+        $orderController->setIdClient($_POST['cliente-id']);
+        $lastOrderId = $orderController->createOrders();
+
+        if (!$lastOrderId) {
+            throw new Exception("Erro ao criar pedido");
+        }
+
+        // Process each product
+        foreach ($_POST['produtos'] as $produto) {
+            if (
+                !isset($produto['id']) || !isset($produto['quantidade']) ||
+                empty($produto['id']) || empty($produto['quantidade'])
+            ) {
+                continue; // Skip invalid entries
+            }
+
+            $ordersProductsController
+                ->setIdPedido($lastOrderId)
+                ->setIdProdutos($produto['id'])
+                ->setQuantidade($produto['quantidade']);
+
+            $ordersProductsController->createOrdersProducts();
+        }
+
+        $orderController
+        ->setPrice()
+        ->editOrders($lastOrderId);
+
+        // Redirect or show success message
+        header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
+        exit;
+    } catch (Exception $e) {
+        $error = $e->getMessage();
+    }
 }
 
 $clients = $clientesController->listClients();
 $products = $productsController->listProducts();
+$ordersAll = $orderController->listOrders();
 
 
 
@@ -40,7 +79,6 @@ $products = $productsController->listProducts();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Vendas</title>
     <link rel="stylesheet" href="/../../../public/styles/dashboard/sales.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -64,36 +102,40 @@ $products = $productsController->listProducts();
                     <div class="form-row">
                         <div class="form-group">
                             <label for="cliente">Cliente*</label>
-                            <select id="cliente" name="cliente" required>
+                            <select id="cliente" name="cliente-id" required>
                                 <option value="">Selecione o cliente</option>
                                 <?php if (isset($clients)): ?>
                                     <?php foreach ($clients as $client): ?>
-                                        <option value="<?php echo $client->ID; ?>"><?php echo $client->Nome_Completo; ?></option>
+                                        <option value="<?php echo $client->ID; ?>">
+                                            <?php echo $client->Nome_Completo; ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
                         </div>
                     </div>
 
-                    <!-- Campo oculto para armazenar o ID do cliente -->
-                    <input type="hidden" id="cliente-id" name="cliente-id">
-
+                    <!-- Products container -->
                     <div class="produtos-container">
                         <div class="form-row produto-item">
                             <div class="form-group">
                                 <label for="produto">Produto*</label>
-                                <select name="produtos[]" required>
+                                <select name="produtos[0][id]" class="produto-select" required>
                                     <option value="">Selecione o produto</option>
                                     <?php if (isset($products)): ?>
                                         <?php foreach ($products as $product): ?>
-                                            <option value="<?php echo $product->ID_Produto; ?>"><?php echo $product->Nome; ?></option>
+                                            <option value="<?php echo $product->ID_Produto; ?>"
+                                                data-price="<?php echo $product->Preco; ?>">
+                                                <?php echo $product->Nome; ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="quantidade">Quantidade*</label>
-                                <input type="number" name="quantidades[]" min="1" value="1" required>
+                                <input type="number" name="produtos[0][quantidade]"
+                                    class="quantidade-input" min="1" value="1" required>
                             </div>
                             <button type="button" class="btn-delete remover-produto">Remover</button>
                         </div>
@@ -101,6 +143,7 @@ $products = $productsController->listProducts();
 
                     <button type="button" class="btn-submit adicionar-produto">Adicionar Produto</button>
 
+                    <!-- Payment method and total remain the same -->
                     <div class="form-row">
                         <div class="form-group">
                             <label for="pagamento">Método de Pagamento*</label>
@@ -116,7 +159,7 @@ $products = $productsController->listProducts();
                     <div class="form-row total-section">
                         <div class="form-group">
                             <label>Total da Venda</label>
-                            <input type="text" id="total" readonly>
+                            <input type="text" id="total" name="total" readonly>
                         </div>
                     </div>
 
@@ -137,14 +180,14 @@ $products = $productsController->listProducts();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (isset($vendas)): ?>
-                            <?php foreach ($vendas as $venda): ?>
+                        <?php if ($ordersAll): ?>
+                            <?php foreach ($ordersAll as $orders): ?>
                                 <tr>
-                                    <td><?php echo $venda->Nome_Cliente; ?></td>
-                                    <td><?php echo date('d/m/Y', strtotime($venda->Data)); ?></td>
-                                    <td>R$ <?php echo number_format($venda->Valor_Total, 2, ',', '.'); ?></td>
+                                    <td><?php echo $orders->Nome_Cliente; ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($orders->Data)); ?></td>
+                                    <td>R$ <?php echo number_format($orders->Valor_Total, 2, ',', '.'); ?></td>
                                     <td class="action-buttons">
-                                        <button class="btn-edit" data-id="<?php echo $venda->ID_Pedido; ?>">Detalhes</button>
+                                        <button class="btn-edit" data-id="<?php echo $orders->ID_Pedido; ?>">Detalhes</button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -154,7 +197,7 @@ $products = $productsController->listProducts();
             </section>
         </div>
     </div>
-    <script src="../../../public/scripts/dashboard/sales.js"></script>
+    <script src="/../../../public/scripts/dashboard/sales.js"></script>
 </body>
 
 </html>

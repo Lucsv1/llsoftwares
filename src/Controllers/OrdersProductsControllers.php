@@ -1,5 +1,9 @@
 <?php
 
+namespace Admin\Project\Controllers;
+
+
+
 use Admin\Project\Models\OrdersProducts;
 
 class OrdersProductsControllers
@@ -62,7 +66,8 @@ class OrdersProductsControllers
         return $this;
     }
 
-    public function createOrdersProducts(){
+    public function createOrdersProducts()
+    {
 
         $data_orders_product = [
             "idPedido" => $this->getIdPedido(),
@@ -72,6 +77,5 @@ class OrdersProductsControllers
 
         $ordersProductsManager = new OrdersProducts();
         $ordersProductsManager->saveDatasOrdersPorducts($data_orders_product);
-
     }
 }

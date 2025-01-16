@@ -192,7 +192,7 @@ class ClientsControllers
     }
 
     public function getClientsById($id)
-    {
+    {   
 
         $clientsConfig = new Clients();
 

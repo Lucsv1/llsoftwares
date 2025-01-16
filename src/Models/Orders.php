@@ -14,15 +14,16 @@ class Orders
         $db = new Database();
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("INSERT INTO Pedidos (ID_Cliente, Valor) VALUES (:id_clientes, :valor)");
+        $stmt = $pdo->prepare("INSERT INTO Pedidos (ID_Cliente) VALUES (:id_clientes)");
 
         $stmt->bindParam(":id_clientes", $data['idClient']);
-        $stmt->bindParam(":valor", $data['price']);
 
         $stmt->execute();
+
+        return $pdo->lastInsertId();
     }
 
-    public function getDatasOrders($data)
+    public function getDatasOrders()
     {
         $db = new Database();
         $pdo = $db->auth_db();
@@ -56,9 +57,8 @@ class Orders
         $db = new Database();
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("UPDATE Pedidos SET ID_Cliente = :idCliente, Valor = :valor");
+        $stmt = $pdo->prepare("UPDATE Pedidos SET  Valor = :valor");
 
-        $stmt->bindParam(":ID_Cliente", $datas['idClient']);
         $stmt->bindParam(":valor", $datas['price']);
 
         $stmt->execute();
