@@ -223,7 +223,7 @@ input[type="text"]:focus {
     background: #f8f9fa;
     font-weight: bold;
     color: #333;
-    position: sticky;
+    /* position: sticky; */
     top: 0;
     z-index: 10;
 }
@@ -249,6 +249,36 @@ input[type="text"]:focus {
 
 .btn-edit:hover {
     background: #ffc107;
+}
+
+/* Search Container */
+.search-container {
+    margin-bottom: 1.5rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23999" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat;
+    background-position: calc(100% - 10px) center;
+    padding-right: 35px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #6b7fd7;
+    box-shadow: 0 0 0 3px rgba(107, 127, 215, 0.1);
+}
+
+/* Highlight search results */
+.highlight {
+    background-color: #fff3cd;
+    padding: 2px;
+    border-radius: 3px;
 }
 
 /* Responsive Design */

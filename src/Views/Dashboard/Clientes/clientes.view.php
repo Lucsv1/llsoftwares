@@ -30,9 +30,7 @@ if ($clientsController->listClients()) {
 }
 
 if (isset($_POST['idDel'])) {
-    $result = $clientsController->deleteClients($_POST['idDel']);
-
-    var_dump($result);
+    $clientsController->deleteClients($_POST['idDel']);
 }
 
 ?>
@@ -119,6 +117,9 @@ if (isset($_POST['idDel'])) {
             <!-- Lista de Clientes -->
             <section class="table-section">
                 <h2 class="table-title">Clientes Cadastrados</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nome do cliente...">
+                </div>
                 <table class="clients-table">
                     <thead>
                         <tr>

@@ -78,4 +78,26 @@ class OrdersProductsControllers
         $ordersProductsManager = new OrdersProducts();
         $ordersProductsManager->saveDatasOrdersPorducts($data_orders_product);
     }
+
+    public function listOrdersProducts()
+    {
+        $ordersProductsManager = new OrdersProducts();
+
+        $datas = $ordersProductsManager->getDatasOrdersPorducts();
+
+        if (empty($datas)) {
+            return false;
+        }
+
+        return $datas;
+    }
+
+    public function getOrdersProductsById($id)
+    {
+        $ordersProductsManager = new OrdersProducts();
+
+        $datas = $ordersProductsManager->getDatasOrdersProductsById($id);
+
+        return $datas;
+    }
 }

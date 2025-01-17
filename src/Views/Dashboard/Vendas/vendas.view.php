@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $paymentsController
             ->setIdOrder($lastOrderId)
             ->setMethod($_POST['metodo_pagamento'])
+            ->setValuePayment($_POST['total'])
             ->createPayments();
 
         // Redirect or show success message
@@ -65,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } catch (Exception $e) {
         $error = $e->getMessage();
-        var_dump($error);
     }
 }
 
@@ -85,6 +85,7 @@ $ordersAll = $orderController->listOrders();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Vendas</title>
     <link rel="stylesheet" href="/../../../public/styles/dashboard/sales.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 
 <body>
@@ -180,6 +181,9 @@ $ordersAll = $orderController->listOrders();
 
             <section class="table-section">
                 <h2 class="table-title">Vendas Recentes</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nome do cliente...">
+                </div>
                 <table class="clients-table">
                     <thead>
                         <tr>

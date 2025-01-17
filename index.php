@@ -29,6 +29,9 @@ switch ($request) {
     case "/vendas":
         require_once __DIR__ . '/src/Views/Dashboard/Vendas/vendas.view.php';
         exit;
+    case "/vendas/visualizar":
+        require_once __DIR__ . '/src/Views/Dashboard/Vendas/visualizar/vendasVisualizar.view.php';
+        exit;
     case "/estoque":
         require_once __DIR__ . '/src/Views/Dashboard/Estoque/estoque.view.php';
         exit;

@@ -11,6 +11,8 @@ class PaymentsControllers
 
     private $method;
 
+    private $valuePayment;
+
 
     public function getIdOrder()
     {
@@ -20,6 +22,10 @@ class PaymentsControllers
     public function getMethod()
     {
         return $this->method;
+    }
+    public function getValuePayment()
+    {
+        return $this->valuePayment;
     }
 
     public function setIdOrder($idOrder)
@@ -35,12 +41,19 @@ class PaymentsControllers
 
         return $this;
     }
+    public function setValuePayment($valuePayment)
+    {
+        $this->valuePayment = $valuePayment;
+
+        return $this;
+    }
 
 
     public function createPayments(){
 
         $data_payment = [
             "idOrder" => $this->getIdOrder(),
+            "valuePayment" => $this->getIdOrder(),
             "method" => $this->getMethod()
         ];
 
