@@ -11,6 +11,7 @@ class OrdersProductsControllers
     private $idPedido;
     private $idProdutos;
     private $quantidade;
+    private $valorTotal;
 
     /**
      * Get the value of quantidade
@@ -66,13 +67,34 @@ class OrdersProductsControllers
         return $this;
     }
 
+      /**
+     * Get the value of valorTotal
+     */ 
+    public function getValorTotal()
+    {
+        return $this->valorTotal;
+    }
+
+    /**
+     * Set the value of valorTotal
+     *
+     * @return  self
+     */ 
+    public function setValorTotal($valorTotal)
+    {
+        $this->valorTotal = $valorTotal;
+
+        return $this;
+    }
+
     public function createOrdersProducts()
     {
 
         $data_orders_product = [
             "idPedido" => $this->getIdPedido(),
             "idProdutos" => $this->getIdProdutos(),
-            "quantidade" => $this->getQuantidade()
+            "quantidade" => $this->getQuantidade(),
+            "valorTotal" => $this->getValorTotal()
         ];
 
         $ordersProductsManager = new OrdersProducts();
@@ -100,4 +122,6 @@ class OrdersProductsControllers
 
         return $datas;
     }
+
+  
 }

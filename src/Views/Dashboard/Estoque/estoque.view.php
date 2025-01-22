@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'])) {
         ->setDescriptionProduct($_POST['descricao'])
         ->setQuantityStorage($_POST['quantidade'])
         ->setPriceProduct($_POST['preco'])
+        ->setPriceCost($_POST['precoCusto'])
         ->createProduct();
 
     header("Location: /estoque");
@@ -77,6 +78,10 @@ if(isset($_POST['idDel'])){
                         <div class="form-group">
                             <label for="quantidade">Quantidade em Estoque*</label>
                             <input type="number" id="quantidade" name="quantidade" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="precoCusto">Preço de Custo*</label>
+                            <input type="number" id="precoCusto" name="precoCusto" min="0" required>
                         </div>
                     </div>
 

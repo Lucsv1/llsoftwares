@@ -14,12 +14,13 @@ class Products
         $db = new Database();
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("INSERT INTO Produtos (Nome, Descricao, Preco, Quantidade_Estoque) VALUES (:nome, :descricao, :preco, :quantidade)");
+        $stmt = $pdo->prepare("INSERT INTO Produtos (Nome, Descricao, Preco, Preco_Custo, Quantidade_Estoque) VALUES (:nome, :descricao, :preco, :precoCusto, :quantidade)");
 
         $stmt->bindParam(":nome", $data['nameProduct']);
         $stmt->bindParam(":descricao", $data['descriptionProduct']);
         $stmt->bindParam(":quantidade", $data['quantityStorage']);
         $stmt->bindParam(":preco", $data['priceProduct']);
+        $stmt->bindParam(":precoCusto", $data['priceCost']);
 
         $stmt->execute();
     }
@@ -61,11 +62,12 @@ class Products
 
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("UPDATE Produtos SET Nome = :nome, Descricao = :descricao, Preco = :preco, Quantidade_Estoque = :quantidade, Status = :status WHERE ID_Produto = $id");
+        $stmt = $pdo->prepare("UPDATE Produtos SET Nome = :nome, Descricao = :descricao, Preco = :preco, Preco_Custo = :priceCost,  Quantidade_Estoque = :quantidade, Status = :status WHERE ID_Produto = $id");
 
         $stmt->bindParam(":nome", $datas['nameProduct']);
         $stmt->bindParam(":descricao", $datas['descriptionProduct']);
         $stmt->bindParam(":preco", $datas['priceProduct']);
+        $stmt->bindParam(":preco", $datas['priceCost']);
         $stmt->bindParam(":quantidade", $datas['quantityStorage']);
         $stmt->bindParam(":status", $datas['statusProduct']);
 

@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Máscara para preço do produto
-    $('#preco').on('input', function() {
+    $('#preco, #precoCusto').on('input', function() {
         let value = $(this).val().replace(/[^\d.,]/g, ''); // Remove tudo exceto números, ponto e vírgula
         value = value.replace(',', '.'); // Converte vírgula para ponto
         
@@ -63,4 +63,35 @@ $(document).ready(function() {
             $(this).addClass('baixo-estoque');
         }
     });
+
+
+    function updateQuantityMax(selectElement) {
+        var selectedOption = $(selectElement).find(':selected');
+        var quantityInput = $(selectElement).closest('.produto-item').find('.quantidade-input');
+        
+        if (selectedOption.val()) {
+            var maxStock = selectedOption.data('stock');
+            quantityInput.attr('max', maxStock);
+            
+            // Se a quantidade atual for maior que o estoque, ajusta para o máximo
+            if (parseInt(quantityInput.val()) > parseInt(maxStock)) {
+                quantityInput.val(maxStock);
+            }
+        } else {
+            quantityInput.removeAttr('max');
+        }
+    }
+
+    // Evento change para selects existentes
+    $(document).on('change', '.produto-select', function() {
+        updateQuantityMax(this);
+    });
+
+    // Opcionalmente, você pode chamar a função na inicialização para selects que já tenham um valor
+    $('.produto-select').each(function() {
+        if ($(this).val()) {
+            updateQuantityMax(this);
+        }
+    });
+
 });

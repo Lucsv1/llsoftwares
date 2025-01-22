@@ -38,6 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Erro ao criar pedido");
         }
 
+        var_dump($_POST['produtos']);
+
         // Process each product
         foreach ($_POST['produtos'] as $produto) {
             if (
@@ -47,10 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 continue; // Skip invalid entries
             }
 
+
+
             $ordersProductsController
                 ->setIdPedido($lastOrderId)
                 ->setIdProdutos($produto['id'])
-                ->setQuantidade($produto['quantidade']);
+                ->setQuantidade($produto['quantidade'])
+                ->setValorTotal($produto['']);
 
             $ordersProductsController->createOrdersProducts();
         }
@@ -134,7 +139,8 @@ $ordersAll = $orderController->listOrders();
                                     <?php if (isset($products)): ?>
                                         <?php foreach ($products as $product): ?>
                                             <option value="<?php echo $product->ID_Produto; ?>"
-                                                data-price="<?php echo $product->Preco; ?>">
+                                                data-price="<?php echo $product->Preco; ?>"
+                                                data-stock="<?php echo $product->Quantidade_Estoque; ?>">
                                                 <?php echo $product->Nome; ?>
                                             </option>
                                         <?php endforeach; ?>
@@ -148,6 +154,7 @@ $ordersAll = $orderController->listOrders();
                                 <input type="number" name="produtos[0][quantidade]"
                                     class="quantidade-input" min="1" value="1" required>
                             </div>
+
                             <button type="button" class="btn-delete remover-produto">Remover</button>
                         </div>
                     </div>

@@ -12,11 +12,12 @@ class OrdersProducts
         $db = new Database();
         $pdo = $db->auth_db();
 
-        $stmt = $pdo->prepare("INSERT INTO Pedidos_Produtos (ID_Pedido,ID_Produto, Quantidade) VALUES (:idPedido,:idProduto, :quantidade)");
+        $stmt = $pdo->prepare("INSERT INTO Pedidos_Produtos (ID_Pedido,ID_Produto, Quantidade, Valor_Total) VALUES (:idPedido,:idProduto, :quantidade, :valor_total)");
 
         $stmt->bindParam(":idPedido", $data['idPedido']);
         $stmt->bindParam(":idProduto", $data['idProdutos']);
         $stmt->bindParam(":quantidade", $data['quantidade']);
+        $stmt->bindParam(":valor_total", $data['valorTotal']);
 
         $stmt->execute();
     }

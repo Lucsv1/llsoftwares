@@ -8,6 +8,7 @@ class ProductsController
 
     private $nameProduct;
     private $priceProduct;
+    private $priceCost;
     private $descriptionProduct;
     private $quantityStorage;
     private $statusProduct;
@@ -90,6 +91,26 @@ class ProductsController
         return $this;
     }
 
+    /**
+     * Get the value of priceCost
+     */ 
+    public function getPriceCost()
+    {
+        return $this->priceCost;
+    }
+
+    /**
+     * Set the value of priceCost
+     *
+     * @return  self
+     */ 
+    public function setPriceCost($priceCost)
+    {
+        $this->priceCost = $priceCost;
+
+        return $this;
+    }
+
 
     public function createProduct()
     {
@@ -98,7 +119,8 @@ class ProductsController
             "nameProduct" => $this->getNameProduct(),
             "descriptionProduct" => $this->getDescriptionProduct(),
             "quantityStorage" => $this->getQuantityStorage(),
-            "priceProduct" => $this->getPriceProduct()
+            "priceProduct" => $this->getPriceProduct(),
+            "priceCost" => $this->getPriceCost()
         ];
 
         $productManager = new Products();
@@ -144,6 +166,7 @@ class ProductsController
             "descriptionProduct" => $this->getDescriptionProduct(),
             "quantityStorage" => $this->getQuantityStorage(),
             "priceProduct" => $this->getPriceProduct(),
+            "priceCost" => $this->getPriceCost(),
             "statusProduct" => $this->getStatusProduct()
         ];
 
@@ -165,4 +188,6 @@ class ProductsController
 
 
    
+
+    
 }

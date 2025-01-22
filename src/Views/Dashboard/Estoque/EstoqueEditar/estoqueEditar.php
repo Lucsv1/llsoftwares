@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
         ->setDescriptionProduct($_POST['descricao'])
         ->setQuantityStorage($_POST['quantidade_estoque'])
         ->setPriceProduct($_POST['preco'])
+        ->setPriceCost($_POST['precoCusto'])
         ->setStatusProduct($_POST['status'])
         ->editProducts($_GET['id']);
 
@@ -108,8 +109,8 @@ $movimentacoes = $stockController->getStockMovimentationById($_GET['id']);
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="preco_custo">Preço de Custo</label>
-                                <input type="number" id="preco_custo" name="preco_custo" step="0.01" min="0"
+                                <label for="precoCusto">Preço de Custo</label>
+                                <input type="number" id="precoCusto" name="precoCusto" step="0.01" min="0"
                                     value="<?php echo $product->Preco_Custo; ?>">
                             </div>
 
