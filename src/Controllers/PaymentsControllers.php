@@ -49,7 +49,8 @@ class PaymentsControllers
     }
 
 
-    public function createPayments(){
+    public function createPayments()
+    {
 
         $data_payment = [
             "idOrder" => $this->getIdOrder(),
@@ -61,6 +62,15 @@ class PaymentsControllers
 
         $paymentManager->saveDatasPayemnts($data_payment);
 
+    }
+
+    public function getPaymentsById($id)
+    {
+        $paymentManager = new Payments();
+
+        $datas = $paymentManager->getDatasPaymentsById($id);
+
+        return $datas;
     }
 
 

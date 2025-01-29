@@ -1,10 +1,16 @@
 <?php
 
+use Admin\Project\Controllers\ClientsControllers;
+use Admin\Project\Controllers\OrdersControllers;
 use Admin\Project\Controllers\OrdersProductsControllers;
+use Admin\Project\Controllers\PaymentsControllers;
 use Admin\Project\Controllers\ProductsController;
 
 $ordersProductsController = new OrdersProductsControllers();
 $productsController = new ProductsController();
+$ordersController = new OrdersControllers();
+$clienteController = new ClientsControllers();
+$paymentsController = new PaymentsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
 
@@ -17,8 +23,23 @@ $ordersProducts = $ordersProductsController->getOrdersProductsById($_GET['id']);
 
 foreach ($ordersProducts as $orderProduct) {
     $products[] = $productsController->getProductsById($orderProduct->ID_Produto);
+    $orders = $ordersController->getOrdersById($orderProduct->ID_Pedido);
+    $payments = $paymentsController->getPaymentsById($orderProduct->ID_Pedido);
+    foreach ($orders as $order) {
+        $clients = $clienteController->getClientsById($order->ID_Cliente);
+        $mainPrice = $order->Valor_Total;
+    }
 }
 
+foreach ($clients as $client) {
+    $nameClient = $client->Nome_Completo;
+}
+
+var_dump($products);
+
+if (!$clients) {
+    return;
+}
 
 
 ?>
@@ -37,7 +58,7 @@ foreach ($ordersProducts as $orderProduct) {
 <body>
     <div class="container">
         <div class="header">
-            <h1>Venda - João Silva</h1>
+            <h1>Venda - <?php echo $nameClient ?></h1>
         </div>
 
         <div>
@@ -55,20 +76,22 @@ foreach ($ordersProducts as $orderProduct) {
             <div class="sale-info">
                 <div class="info-item">
                     <span class="info-label">Cliente</span>
-                    <span class="info-value">João Silva</span>
+                    <span class="info-value"><?php echo $nameClient ?></span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Data da Venda</span>
-                    <span class="info-value">15/01/2025</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Método de Pagamento</span>
-                    <span class="info-value">Cartão de Crédito</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Número do Pedido</span>
-                    <span class="info-value">#12345</span>
-                </div>
+                <?php foreach ($payments as $payment): ?>
+                    <div class="info-item">
+                        <span class="info-label">Data da Venda</span>
+                        <span class="info-value"><?= $payment->Data ?></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Método de Pagamento</span>
+                        <span class="info-value"><?= $payment->Metodo_Pagamento ?></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Número do Pedido</span>
+                        <span class="info-value">#<?= $payment->ID_Pedido ?></span>
+                    </div>
+                <?php endforeach ?>
             </div>
 
             <table class="products-table">
@@ -92,7 +115,8 @@ foreach ($ordersProducts as $orderProduct) {
                                 <td><?php echo $product->Nome; ?></td>
                                 <td><?php echo $orderProduct->Quantidade; ?></td>
                                 <td>R$ <?php echo number_format($product->Preco, 2, ',', '.'); ?></td>
-                                <td>R$ <?php echo number_format($product->Preco * $orderProduct->Quantidade, 2, ',', '.'); ?></td>
+                                <td>R$ <?php echo number_format($product->Preco * $orderProduct->Quantidade, 2, ',', '.'); ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -102,7 +126,7 @@ foreach ($ordersProducts as $orderProduct) {
 
             <div class="total-section">
                 <span class="total-label">Total da Venda</span>
-                <span class="total-value">R$ 175,00</span>
+                <span class="total-value"><?= $mainPrice ?></span>
             </div>
         </section>
     </div>

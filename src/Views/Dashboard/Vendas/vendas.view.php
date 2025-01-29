@@ -46,16 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 !isset($produto['id']) || !isset($produto['quantidade']) ||
                 empty($produto['id']) || empty($produto['quantidade'])
             ) {
-                continue; // Skip invalid entries
+                continue;
             }
-
-
 
             $ordersProductsController
                 ->setIdPedido($lastOrderId)
                 ->setIdProdutos($produto['id'])
                 ->setQuantidade($produto['quantidade'])
-                ->setValorTotal($produto['']);
+                ->setValorTotal($_POST['total']);
 
             $ordersProductsController->createOrdersProducts();
         }
@@ -70,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Refresh:0");
         exit;
     } catch (Exception $e) {
+        var_dump($e);
         $error = $e->getMessage();
     }
 }
@@ -77,8 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $clients = $clientesController->listClients();
 $products = $productsController->listProducts();
 $ordersAll = $orderController->listOrders();
-
-
 
 ?>
 
@@ -102,7 +99,8 @@ $ordersAll = $orderController->listOrders();
         <div>
             <form action="/painel">
                 <button class="button_exit" type="submit">
-                    <span class="info_exit"><img src="../../../public/assets/seta.png" alt=""> Voltar para o painel</span>
+                    <span class="info_exit"><img src="../../../public/assets/seta.png" alt=""> Voltar para o
+                        painel</span>
                 </button>
             </form>
         </div>
@@ -151,7 +149,7 @@ $ordersAll = $orderController->listOrders();
                             <input type="hidden" id="produto-id" name="produto-id" value="">
                             <div class="form-group">
                                 <label for="quantidade">Quantidade*</label>
-                                <input type="number" name="produtos[0][quantidade]"
+                                <input type="number" name="produtos[0][quantidade]" id="quantidade"
                                     class="quantidade-input" min="1" value="1" required>
                             </div>
 
@@ -189,7 +187,8 @@ $ordersAll = $orderController->listOrders();
             <section class="table-section">
                 <h2 class="table-title">Vendas Recentes</h2>
                 <div class="search-container">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nome do cliente...">
+                    <input type="text" id="searchInput" class="search-input"
+                        placeholder="Buscar por nome do cliente...">
                 </div>
                 <table class="clients-table">
                     <thead>
@@ -213,10 +212,9 @@ $ordersAll = $orderController->listOrders();
                                     <td class="action-buttons">
                                         <button class="btn-edit" data-id="<?php echo $orders->ID_Pedido; ?>">Detalhes</button>
                                     </td>
-                                    </tr>
-
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </section>

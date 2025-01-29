@@ -21,6 +21,7 @@ class OrdersControllers
     {
         return $this->price;
     }
+    
 
     public function setIdClient($idClient)
     {

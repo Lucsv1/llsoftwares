@@ -11,6 +11,7 @@ class OrdersProductsControllers
     private $idPedido;
     private $idProdutos;
     private $quantidade;
+    private $valorUnitario;
     private $valorTotal;
 
     /**
@@ -67,9 +68,13 @@ class OrdersProductsControllers
         return $this;
     }
 
-      /**
+    /**
      * Get the value of valorTotal
-     */ 
+     */
+    public function getValorUnitario()
+    {
+        return $this->valorUnitario;
+    }
     public function getValorTotal()
     {
         return $this->valorTotal;
@@ -79,7 +84,13 @@ class OrdersProductsControllers
      * Set the value of valorTotal
      *
      * @return  self
-     */ 
+     */
+    public function setValorUnitario($valorUnitario)
+    {
+        $this->valorUnitario = $valorUnitario;
+
+        return $this;
+    }
     public function setValorTotal($valorTotal)
     {
         $this->valorTotal = $valorTotal;
@@ -94,6 +105,7 @@ class OrdersProductsControllers
             "idPedido" => $this->getIdPedido(),
             "idProdutos" => $this->getIdProdutos(),
             "quantidade" => $this->getQuantidade(),
+            // "valorUnitario" => $this->getValorUnitario(),
             "valorTotal" => $this->getValorTotal()
         ];
 
@@ -123,5 +135,5 @@ class OrdersProductsControllers
         return $datas;
     }
 
-  
+
 }

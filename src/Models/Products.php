@@ -67,7 +67,7 @@ class Products
         $stmt->bindParam(":nome", $datas['nameProduct']);
         $stmt->bindParam(":descricao", $datas['descriptionProduct']);
         $stmt->bindParam(":preco", $datas['priceProduct']);
-        $stmt->bindParam(":preco", $datas['priceCost']);
+        $stmt->bindParam(":priceCost", $datas['priceCost']);
         $stmt->bindParam(":quantidade", $datas['quantityStorage']);
         $stmt->bindParam(":status", $datas['statusProduct']);
 
