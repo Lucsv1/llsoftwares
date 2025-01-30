@@ -7,7 +7,7 @@ services:
       dockerfile: ./Docker/Dockerfile
     container_name: apache-app
     ports:
-     - 80:80
+     - 8008:80
     depends_on:
      - db
     environment:

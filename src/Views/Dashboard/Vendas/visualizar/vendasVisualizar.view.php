@@ -14,33 +14,41 @@ $paymentsController = new PaymentsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
 
+// No início do arquivo, após obter o ID do pedido
 if (!isset($_GET['id'])) {
     return;
 }
 
+// Busca os produtos do pedido
 $ordersProducts = $ordersProductsController->getOrdersProductsById($_GET['id']);
 
+// Array para armazenar os detalhes dos produtos
+$orderDetails = [];
 
+// Para cada produto no pedido, busca suas informações
 foreach ($ordersProducts as $orderProduct) {
-    $products[] = $productsController->getProductsById($orderProduct->ID_Produto);
-    $orders = $ordersController->getOrdersById($orderProduct->ID_Pedido);
-    $payments = $paymentsController->getPaymentsById($orderProduct->ID_Pedido);
-    foreach ($orders as $order) {
-        $clients = $clienteController->getClientsById($order->ID_Cliente);
-        $mainPrice = $order->Valor_Total;
-    }
+    // Busca os detalhes do produto
+    $productInfo = $productsController->getProductsById($orderProduct->ID_Produto);
+
+    // Armazena as informações necessárias
+    $orderDetails[] = [
+        'product' => $productInfo[0], // Assumindo que getProductsById retorna um array
+        'quantity' => $orderProduct->Quantidade
+    ];
+}
+
+// Busca informações do pedido
+$orders = $ordersController->getOrdersById($_GET['id']);
+$payments = $paymentsController->getPaymentsById($_GET['id']);
+
+foreach ($orders as $order) {
+    $clients = $clienteController->getClientsById($order->ID_Cliente);
+    $mainPrice = $order->Valor_Total;
 }
 
 foreach ($clients as $client) {
     $nameClient = $client->Nome_Completo;
 }
-
-var_dump($products);
-
-if (!$clients) {
-    return;
-}
-
 
 ?>
 
@@ -105,17 +113,14 @@ if (!$clients) {
                 </thead>
                 <tbody>
                 <tbody>
-                    <?php if ($products): ?>
-                        <?php foreach ($products as $productArray): ?>
-                            <?php
-                            // Como cada item é um array contendo um objeto, pegamos o primeiro item
-                            $product = $productArray[0];
-                            ?>
+                    <?php if (!empty($orderDetails)): ?>
+                        <?php foreach ($orderDetails as $detail): ?>
                             <tr>
-                                <td><?php echo $product->Nome; ?></td>
-                                <td><?php echo $orderProduct->Quantidade; ?></td>
-                                <td>R$ <?php echo number_format($product->Preco, 2, ',', '.'); ?></td>
-                                <td>R$ <?php echo number_format($product->Preco * $orderProduct->Quantidade, 2, ',', '.'); ?>
+                                <td><?php echo $detail['product']->Nome; ?></td>
+                                <td><?php echo $detail['quantity']; ?></td>
+                                <td>R$ <?php echo number_format($detail['product']->Preco, 2, ',', '.'); ?></td>
+                                <td>R$
+                                    <?php echo number_format($detail['product']->Preco * $detail['quantity'], 2, ',', '.'); ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

@@ -14,7 +14,6 @@ $orderController = new OrdersControllers();
 $ordersProductsController = new OrdersProductsControllers();
 $paymentsController = new PaymentsControllers();
 
-
 header("Cache-Control: no-cache, must-revalidate");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -38,8 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Erro ao criar pedido");
         }
 
-        var_dump($_POST['produtos']);
-
         // Process each product
         foreach ($_POST['produtos'] as $produto) {
             if (
@@ -48,15 +45,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ) {
                 continue;
             }
-
-       
-
+        
+            // Get product details to access the price
+            $productDetails = $productsController->getProductsById($produto['id']);
+            
+            foreach($productDetails as $productDetail){
+                $unitValue = $productDetail->Preco;
+                $productTotal = $productDetail->Preco * $produto['quantidade'];
+            }
+            // Calculate total value for this product
+        
             $ordersProductsController
                 ->setIdPedido($lastOrderId)
                 ->setIdProdutos($produto['id'])
                 ->setQuantidade($produto['quantidade'])
-                ->setValorTotal($_POST['total']);
-
+                ->setValorUnitario($unitValue)
+                ->setValorTotal($productTotal);
+        
             $ordersProductsController->createOrdersProducts();
         }
 
@@ -67,10 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ->createPayments();
 
         // Redirect or show success message
-        header("Refresh:0");
+        header('Location: ' . $_SERVER['PHP_SELF']);
         exit;
+        
     } catch (Exception $e) {
-        var_dump($e);
         $error = $e->getMessage();
     }
 }
@@ -110,7 +115,7 @@ $ordersAll = $orderController->listOrders();
         <div class="content">
             <section class="form-section">
                 <h2 class="form-title">Registrar Nova Venda</h2>
-                <form action="" method="POST">
+                <form id="salesForm" action="" method="POST">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="cliente">Cliente*</label>
@@ -137,7 +142,7 @@ $ordersAll = $orderController->listOrders();
                                 <select name="produtos[0][id]" class="produto-select" required>
                                     <option value="">Selecione o produto</option>
                                     <?php if (isset($products)): ?>
-                                        <?php foreach ($products as $product): ?>
+                                        <?php foreach ($products as $index => $product): ?>
                                             <option value="<?php echo $product->ID_Produto; ?>"
                                                 data-price="<?php echo $product->Preco; ?>"
                                                 data-stock="<?php echo $product->Quantidade_Estoque; ?>">
@@ -178,7 +183,6 @@ $ordersAll = $orderController->listOrders();
                         <div class="form-group">
                             <label>Total da Venda</label>
                             <input type="text" id="total" name="total" readonly>
-                            <input type="hidden" id="totalHidden" name="produtos[0][total]" readonly>
                         </div>
                     </div>
 

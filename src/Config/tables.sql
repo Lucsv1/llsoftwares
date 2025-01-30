@@ -68,7 +68,6 @@ CREATE TABLE `Servicos` (
 CREATE TABLE `Agendamentos` (
     ID_Agendamento INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     ID_Cliente INT,
-    ID_Servico INT,
     ID_Usuario INT,
     Data_Agendamento DATE NOT NULL,
     Hora_Inicio TIME NOT NULL,
@@ -77,7 +76,6 @@ CREATE TABLE `Agendamentos` (
     Observacoes TEXT,
     Created_At DATETIME DEFAULT current_timestamp(),
     FOREIGN KEY (ID_Cliente) REFERENCES Clientes(ID),
-    FOREIGN KEY (ID_Servico) REFERENCES Servicos(ID_Servico),
     FOREIGN KEY (ID_Usuario) REFERENCES Users(ID)
 );
 

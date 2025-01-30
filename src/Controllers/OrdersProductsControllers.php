@@ -105,7 +105,7 @@ class OrdersProductsControllers
             "idPedido" => $this->getIdPedido(),
             "idProdutos" => $this->getIdProdutos(),
             "quantidade" => $this->getQuantidade(),
-            // "valorUnitario" => $this->getValorUnitario(),
+            "valorUnitario" => $this->getValorUnitario(),
             "valorTotal" => $this->getValorTotal()
         ];
 

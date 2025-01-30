@@ -111,11 +111,6 @@ $(document).ready(function() {
         console.log(id);
     });
 
-    function confirmDeletion() {
-        if (confirm('Tem certeza que deseja excluir este cliente?')) {
-            window.location.href = 'delete_cliente?id=<?php echo $client->ID; ?>';
-        }
-    }
 });
 
 document.addEventListener('DOMContentLoaded', function(){
