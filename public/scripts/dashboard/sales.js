@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const rows = document.querySelectorAll('.produto-item');
 
         rows.forEach(row => {
+
             const select = row.querySelector('.produto-select');
             const quantity = row.querySelector('.quantidade-input').value;
             const option = select.selectedOptions[0];
@@ -73,18 +74,21 @@ document.addEventListener('DOMContentLoaded', function () {
             if (option && option.dataset.stock) {
                 row.querySelector('.quantidade-input').max = option.dataset.stock;
                 limitQuantity = option.dataset.stock;
+                priceLimit = parseFloat(option.dataset.price);
 
                 if (parseInt(quantity) > limitQuantity) {
                     row.querySelector('.quantidade-input').value = limitQuantity;
-
+                    priceLimit = limitQuantity;
                 }
 
                 else if (quantity < 1 || isNaN(quantity)) {
                     document.getElementById('quantidade').value = 1;
+                    priceLimit = 1;
                 }
 
                 if (option && option.dataset.price) {
                     const quantityModdified = row.querySelector('.quantidade-input').value;
+                    document.getElementById('totalHidden').value = priceLimit;
                     total += parseFloat(option.dataset.price) * parseInt(quantityModdified);
                 }
             }

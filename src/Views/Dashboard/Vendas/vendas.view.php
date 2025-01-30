@@ -49,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 continue;
             }
 
+       
+
             $ordersProductsController
                 ->setIdPedido($lastOrderId)
                 ->setIdProdutos($produto['id'])
@@ -176,6 +178,7 @@ $ordersAll = $orderController->listOrders();
                         <div class="form-group">
                             <label>Total da Venda</label>
                             <input type="text" id="total" name="total" readonly>
+                            <input type="hidden" id="totalHidden" name="produtos[0][total]" readonly>
                         </div>
                     </div>
 
