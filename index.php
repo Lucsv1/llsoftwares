@@ -41,6 +41,9 @@ switch ($request) {
     case "/agendamento":
         require_once __DIR__ . '/src/Views/Dashboard/Agendamento/agendamento.view.php';
         exit;
+    case "/agendamento/editar":
+        require_once __DIR__ . '/src/Views/Dashboard/Agendamento/AgendamentoEditar/agendamentoEditar.view.php';
+        exit;
     case "/relatorios":
         require_once __DIR__ . '/src/Views/Dashboard/Relatorios/relatorios.view.php';
         exit;

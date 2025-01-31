@@ -84,7 +84,7 @@ CREATE TABLE `Pedidos` (
     ID_Cliente INT,
     ID_Usuario INT,
     Tipo ENUM('Venda', 'Orçamento') DEFAULT 'Venda',
-    Status ENUM('Pendente', 'Aprovado', 'Cancelado', 'Concluído') DEFAULT 'Pendente',
+    Status ENUM('Pendente', 'Aprovado', 'Cancelado', 'Concluído') DEFAULT 'Concluído',
     Data DATETIME DEFAULT current_timestamp(),
     Valor_Subtotal DECIMAL(10, 2) DEFAULT NULL,
     Valor_Desconto DECIMAL(10, 2) DEFAULT 0,

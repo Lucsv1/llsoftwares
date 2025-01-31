@@ -31,20 +31,23 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['data_agendamento']) )
 
 }
 
-foreach ($appointment as $agendamento) {
-
-    $clientInfo = $clientController->getClientsById($agendamento->ID_Cliente);
-
-    $appointmentDetails[] = [
-        'client' => $clientInfo[0],
-        'idAgendamento' => $agendamento->ID_Agendamento,
-        'data' => $agendamento->Data_Agendamento,
-        'horarioInicio' => $agendamento->Hora_Inicio,
-        'horarioFim' => $agendamento->Hora_Fim,
-        'status' => $agendamento->Status
-    ];
-
+if($appointment){
+    foreach ($appointment as $agendamento) {
+    
+        $clientInfo = $clientController->getClientsById($agendamento->ID_Cliente);
+    
+        $appointmentDetails[] = [
+            'client' => $clientInfo[0],
+            'idAgendamento' => $agendamento->ID_Agendamento,
+            'data' => $agendamento->Data_Agendamento,
+            'horarioInicio' => $agendamento->Hora_Inicio,
+            'horarioFim' => $agendamento->Hora_Fim,
+            'status' => $agendamento->Status
+        ];
+    
+    }
 }
+
 
 if(isset($_POST['idDel'])){
     $appointmentController->deleteClients($_POST['idDel']);

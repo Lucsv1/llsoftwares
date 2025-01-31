@@ -1,0 +1,153 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    line-height: 1.6;
+    color: #333;
+}
+
+.button_exit {
+    background: white;
+    border: none;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.info_exit {
+    display: flex;
+    align-items: center;
+}
+
+.info_exit img {
+    width: 50px;
+    height: 50px;
+}
+
+.infos_init {
+    display: flex;
+    justify-content: space-between;
+}
+
+.financial-dashboard {
+    max-width: 1400px; /* Aumentei para dar mais espaço */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Dashboard Title */
+.financial-dashboard h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Summary Cards */
+.summary-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.summary-cards .card {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.summary-cards .card:hover {
+    transform: translateY(-5px);
+}
+
+.summary-cards .card h3 {
+    color: #7f8c8d;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.summary-cards .card p {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Charts Container - Alterações principais */
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); /* Aumentei o tamanho mínimo */
+    gap: 30px; /* Aumentei o espaço entre os gráficos */
+}
+
+.chart {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    min-height: 500px; /* Altura mínima aumentada */
+    display: flex;
+    flex-direction: column;
+}
+
+.chart h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.chart canvas {
+    width: 100% !important;
+    height: 400px !important; /* Aumentei a altura do canvas */
+    max-height: 400px;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1200px) {
+    .charts-container {
+        grid-template-columns: 1fr 1fr; /* 2 colunas em telas médias */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .summary-cards {
+        flex-direction: column;
+    }
+
+    .charts-container {
+        grid-template-columns: 1fr; /* 1 coluna em telas menores */
+    }
+
+    .chart {
+        min-height: 400px;
+    }
+
+    .chart canvas {
+        height: 300px !important;
+        max-height: 300px;
+    }
+}
+
+/* Restante do CSS permanece o mesmo */
+/* (Color Scheme, Additional Enhancements, Print Styles, etc.) */

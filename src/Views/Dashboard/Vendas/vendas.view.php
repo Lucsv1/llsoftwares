@@ -72,8 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ->createPayments();
 
         // Redirect or show success message
-        header('Location: ' . $_SERVER['PHP_SELF']);
-        exit;
+        header("Refresh:0");
         
     } catch (Exception $e) {
         $error = $e->getMessage();

@@ -3,7 +3,6 @@
 use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ClientsControllers;
 
-$userManager = new UserManager();
 $clientesController = new ClientsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
@@ -27,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
         ->setObservation($_POST['observacao'])
         ->editClients($_GET['id']);
 
-        header("Refresh:0");
+        header('Location: ' . $_SERVER['PHP_SELF']);
 }
 
 // var_dump($client);
