@@ -67,6 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ->setValorTotal($productTotal);
 
             $ordersProductsController->createOrdersProducts();
+
+            $productsController->productsSold($produto['id'], $produto['quantidade']);
         }
 
         $paymentsController

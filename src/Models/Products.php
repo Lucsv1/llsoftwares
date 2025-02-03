@@ -90,4 +90,17 @@ class Products
         return $data;
     }
 
+    public function datasProductsSold($id, $solded){
+
+        $db = new Database();
+
+        $pdo = $db->auth_db();
+
+        $stmt = $pdo->prepare("UPDATE Produtos SET Quantidade_Estoque = :solded WHERE ID_Produto = $id");
+
+        $stmt->bindParam(":solded", $solded);
+
+        $stmt->execute();
+    }
+
 }

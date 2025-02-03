@@ -14,9 +14,13 @@ class Database
 
     public function __construct()
     {
-        $this->setDsn("mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}");
-        $this->setUser($_ENV['DB_USER']);
-        $this->setPassword($_ENV['DB_PASSWORD']);
+        // $this->setDsn("mysql:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_NAME']}");
+        // $this->setUser($_ENV['DB_USER']);
+        // $this->setPassword($_ENV['DB_PASSWORD']);
+
+        $this->setDsn("mysql:host=db;dbname=lldb");
+        $this->setUser("user_app");
+        $this->setPassword("password");
     }
 
     /**

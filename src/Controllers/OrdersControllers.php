@@ -4,8 +4,6 @@ namespace Admin\Project\Controllers;
 
 use Admin\Project\Models\Orders;
 
-
-
 class OrdersControllers
 {
     private $idClient;

@@ -29,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'])) {
 $products = $productsController->listProducts();
 
 
+
+
 if (isset($_POST['idDel'])) {
     $productsController->deleteProducts($_POST['idDel']);
 }

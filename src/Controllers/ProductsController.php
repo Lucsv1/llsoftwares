@@ -183,7 +183,17 @@ class ProductsController
 
     }
 
+    public function productsSold($id, $solded){
 
+        $productsConfig = new Products();
+
+        $datas = $this->getProductsById($id);
+
+        $sold = $datas[0]->Quantidade_Estoque - $solded;
+
+        $productsConfig->datasProductsSold($id, $sold);
+
+    }
 
 
 
