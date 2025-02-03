@@ -88,7 +88,7 @@ CREATE TABLE `Pedidos` (
     Data DATETIME DEFAULT current_timestamp(),
     Valor_Subtotal DECIMAL(10, 2) DEFAULT NULL,
     Valor_Desconto DECIMAL(10, 2) DEFAULT 0,
-    Valor_Total VARCHAR(255) NOT NULL,
+    Valor_Total DECIMAL(10,2) NOT NULL,
     Observacoes TEXT,
     FOREIGN KEY (ID_Cliente) REFERENCES Clientes(ID),
     FOREIGN KEY (ID_Usuario) REFERENCES Users(ID)

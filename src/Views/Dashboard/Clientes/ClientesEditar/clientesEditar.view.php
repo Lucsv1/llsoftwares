@@ -3,6 +3,7 @@
 use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ClientsControllers;
 
+$userManager = new UserManager();
 $clientesController = new ClientsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
