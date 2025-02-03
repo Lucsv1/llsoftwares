@@ -4,10 +4,14 @@ use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ClientsControllers;
 use Admin\Project\Models\Clients;
 
-$userManger = new UserManager();
+$userManager = new UserManager();
 $clientsController = new ClientsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
+
+if (!$userManager->hasUserToken()) {
+    header("Location: / ");
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome_completo'])) {
 

@@ -95,3 +95,53 @@ $(document).ready(function() {
     });
 
 });
+
+document.addEventListener('DOMContentLoaded', function(){
+    const searchInput = document.getElementById('searchInput');
+    const table = document.querySelector('.clients-table');
+    const rows = table.getElementsByTagName('tr');
+
+    searchInput.addEventListener('keyup', function(e) {
+        const searchText = e.target.value.toLowerCase();
+        
+        // Start from index 1 to skip the header row
+        for(let i = 1; i < rows.length; i++) {
+            const clientName = rows[i].getElementsByTagName('td')[0];
+            
+            if(clientName) {
+                const nameText = clientName.textContent || clientName.innerText;
+                
+                if(nameText.toLowerCase().indexOf(searchText) > -1) {
+                    rows[i].style.display = '';
+                    
+                    // Remove existing highlights
+                    clientName.innerHTML = nameText;
+                    
+                    // Add highlight if there's a search term
+                    if(searchText) {
+                        const regex = new RegExp(searchText, 'gi');
+                        clientName.innerHTML = nameText.replace(regex, match => 
+                            `<span class="highlight">${match}</span>`
+                        );
+                    }
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    });
+    
+    // Clear search and reset display when input is cleared
+    searchInput.addEventListener('search', function() {
+        if(this.value === '') {
+            for(let i = 1; i < rows.length; i++) {
+                rows[i].style.display = '';
+                const clientName = rows[i].getElementsByTagName('td')[0];
+                if(clientName) {
+                    clientName.innerHTML = clientName.innerText;
+                }
+            }
+        }
+    });
+
+})

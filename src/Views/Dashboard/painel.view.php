@@ -12,9 +12,6 @@ if (!$userManager->hasUserToken()) {
     header("Location: / ");
 }
 
-$token = $userManager->getUserToken();
-$user = $token->getUser();
-
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +89,7 @@ $user = $token->getUser();
             </div>
 
             <!-- Card Funcionários -->
-            <div class="card">
+            <!-- <div class="card">
                 <form action="/funcionarios" method="POST">
                     <button type="submit">
                         <div class="card-image">
@@ -101,7 +98,7 @@ $user = $token->getUser();
                         <div class="card-title">Gestão de Funcionários</div>
                     </button>
                 </form>
-            </div>
+            </div> -->
         </div>
     </div>
 </body>

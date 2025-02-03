@@ -136,7 +136,7 @@ class AppointmentController
         $appointmentModel->editDatasAppointment($id, $data_appointment);
     }
 
-    public function deleteClients($id)
+    public function deleteAppointments($id)
     {
         $appointmentModel = new Appointment();
         $appointmentModel->delDatasAppointment($id);

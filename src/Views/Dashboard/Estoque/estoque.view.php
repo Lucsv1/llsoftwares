@@ -8,6 +8,10 @@ $productsController = new ProductsController();
 
 header("Cache-Control: no-cache, must-revalidate");
 
+if (!$userManager->hasUserToken()) {
+    header("Location: / ");
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'])) {
 
     $productsController
@@ -25,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nome'])) {
 $products = $productsController->listProducts();
 
 
-if(isset($_POST['idDel'])){
+if (isset($_POST['idDel'])) {
     $productsController->deleteProducts($_POST['idDel']);
 }
 
@@ -99,6 +103,10 @@ if(isset($_POST['idDel'])){
             <!-- Lista de Produtos em Estoque -->
             <section class="table-section">
                 <h2 class="table-title">Produtos em Estoque</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input"
+                        placeholder="Buscar por nome de produto...">
+                </div>
                 <table class="clients-table">
                     <thead>
                         <tr>
@@ -124,7 +132,7 @@ if(isset($_POST['idDel'])){
                                             Sem Estoque
                                         </td>
                                     <?php endif ?>
-                                    <td> <?php echo str_replace("_"," ",$product->Status) ?></td>
+                                    <td> <?php echo str_replace("_", " ", $product->Status) ?></td>
                                     <td class="action-buttons">
                                         <button class="btn-edit"
                                             data-id="<?php echo $product->ID_Produto; ?>">Visualizar/Editar</button>

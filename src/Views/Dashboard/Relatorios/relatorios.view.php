@@ -2,21 +2,31 @@
 
 // Instantiate the report
 
+use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Models\FinancialReport;
+use Carbon\Carbon;
 
 $report = new FinancialReport();
+$userManager = new UserManager();
+
+if (!$userManager->hasUserToken()) {
+    header('Location: / ');
+}
 
 // Get current month's data
 $currentMonthStart = date('Y-m-01');
 $currentMonthEnd = date('Y-m-t');
 
-$totalRevenue = $report->getTotalRevenue(null, null);
-$totalExpenses = $report->getTotalExpenses(null, null);
+$totalRevenue = $report->getTotalRevenue($currentMonthStart, $currentMonthEnd);
+$totalExpenses = $report->getTotalExpenses($currentMonthStart, $currentMonthEnd);
 $netProfit = $totalRevenue - $totalExpenses;
 
 $paymentMethodBreakdown = $report->getPaymentMethodBreakdown($currentMonthStart, $currentMonthEnd);
 $topProducts = $report->getTopProducts();
 $monthlyRevenueTrend = $report->getMonthlyRevenueTrend();
+
+Carbon::setLocale('pt_BR'); // Define o locale para português
+$mesAno = Carbon::now()->translatedFormat('F Y'); // Retorna "Outubro 2023"
 
 ?>
 
@@ -46,7 +56,7 @@ $monthlyRevenueTrend = $report->getMonthlyRevenueTrend();
             </form>
         </div>
 
-        <h1>Relatório Financeiro - <?= date('F Y') ?></h1>
+        <h1>Relatório Financeiro - <?= ucfirst($mesAno) ?></h1>
 
         <div class="summary-cards">
             <div class="card">

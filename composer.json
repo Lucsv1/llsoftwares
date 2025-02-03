@@ -11,5 +11,7 @@
             "email": "lcasgalindo@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "nesbot/carbon": "^3.8"
+    }
 }

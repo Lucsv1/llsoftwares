@@ -1,13 +1,22 @@
 <?php
 
+use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\AppointmentController;
 use Admin\Project\Controllers\ClientsControllers;
+
+$userManager = new UserManager();
 
 $appointmentController = new AppointmentController();
 $appointment = $appointmentController->listAppointments();
 
 $clientController = new ClientsControllers();
 $clients = $clientController->listClients();
+
+header("Cache-Control: no-cache, must-revalidate");
+
+if (!$userManager->hasUserToken()) {
+    header("Location: / ");
+}
 
 $appointmentDetails = [];
 
@@ -22,11 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['data_agendamento']) )
             ->setObservations($_POST['observacoes'])
             ->createAppointment();
 
-        header('Location: ' . $_SERVER['PHP_SELF']);
-        exit;
+            header("Location: /agendamento");
 
     } catch (Exception $e) {
-        
+        error_log($e->getMessage());
     }
 
 }
@@ -48,11 +56,9 @@ if($appointment){
     }
 }
 
-
 if(isset($_POST['idDel'])){
-    $appointmentController->deleteClients($_POST['idDel']);
+    $appointmentController->deleteAppointments($_POST['idDel']);
 }
-
 
 ?>
 
@@ -86,7 +92,7 @@ if(isset($_POST['idDel'])){
             <!-- Formulário de Agendamento -->
             <section class="form-section">
                 <h2 class="form-title">Novo Agendamento</h2>
-                <form action="/" method="POST">
+                <form action="/agendamento" method="POST">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="cliente">Cliente*</label>

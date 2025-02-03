@@ -157,7 +157,7 @@
     background: #f8f9fa;
   }
   
-  .action-buttons {
+  .action--groups {
     display: flex;
     gap: 0.5rem;
   }

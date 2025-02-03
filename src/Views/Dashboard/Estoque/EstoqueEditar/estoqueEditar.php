@@ -10,6 +10,10 @@ $stockController = new StockMovimentController();
 
 header("Cache-Control: no-cache, must-revalidate");
 
+if (!$userManager->hasUserToken()) {
+    header("Location: / ");
+}
+
 if (!isset($_GET['id'])) {
     return;
 }

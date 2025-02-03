@@ -1,11 +1,13 @@
 <?php
 
+use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\ClientsControllers;
 use Admin\Project\Controllers\OrdersControllers;
 use Admin\Project\Controllers\OrdersProductsControllers;
 use Admin\Project\Controllers\PaymentsControllers;
 use Admin\Project\Controllers\ProductsController;
 
+$userManager = new UserManager();
 $ordersProductsController = new OrdersProductsControllers();
 $productsController = new ProductsController();
 $ordersController = new OrdersControllers();
@@ -13,6 +15,10 @@ $clienteController = new ClientsControllers();
 $paymentsController = new PaymentsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
+
+if (!$userManager->hasUserToken()) {
+    header("Location: / ");
+}
 
 // No início do arquivo, após obter o ID do pedido
 if (!isset($_GET['id'])) {

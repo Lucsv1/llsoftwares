@@ -11,12 +11,32 @@ $(document).ready(function () {
         },
         cache: true,
         success: function (response) {
-            console.log(id);
+           
         },
     });
 
     $(".btn-submit").click(function () {
         alert("Agendamento Atualizado");
+    })
+
+    $(".btn-cancel").click(function () {
+
+        const idCancel = $(this).data('id');
+
+        console.log(idCancel);
+
+        $.ajax({
+            url: "",
+            method: "POST",
+            data: {
+                idCancel: idCancel,
+            },
+            cache: true,
+            success: function (response) {
+                console.log(id);
+                window.location.reload();
+            }
+        })
     })
 
 });

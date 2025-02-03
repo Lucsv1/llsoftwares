@@ -16,6 +16,10 @@ $paymentsController = new PaymentsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
 
+if (!$userManager->hasUserToken()) {
+    header("Location: / ");
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Validate required fields
@@ -30,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Create the order first
         $orderController
             ->setIdClient($_POST['cliente-id'])
-            ->setPrice($_POST['total']);
+            ->setPrice(str_replace('R$', '', $_POST['total']));
         $lastOrderId = $orderController->createOrders();
 
         if (!$lastOrderId) {
@@ -45,35 +49,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ) {
                 continue;
             }
-        
+
             // Get product details to access the price
             $productDetails = $productsController->getProductsById($produto['id']);
-            
-            foreach($productDetails as $productDetail){
+
+            foreach ($productDetails as $productDetail) {
                 $unitValue = $productDetail->Preco;
                 $productTotal = $productDetail->Preco * $produto['quantidade'];
             }
             // Calculate total value for this product
-        
+
             $ordersProductsController
                 ->setIdPedido($lastOrderId)
                 ->setIdProdutos($produto['id'])
                 ->setQuantidade($produto['quantidade'])
                 ->setValorUnitario($unitValue)
                 ->setValorTotal($productTotal);
-        
+
             $ordersProductsController->createOrdersProducts();
         }
 
         $paymentsController
             ->setIdOrder($lastOrderId)
             ->setMethod($_POST['metodo_pagamento'])
-            ->setValuePayment($_POST['total'])
+            ->setValuePayment(str_replace('R$', '', $_POST['total']))
             ->createPayments();
 
         // Redirect or show success message
         header("Refresh:0");
-        
+
     } catch (Exception $e) {
         $error = $e->getMessage();
     }

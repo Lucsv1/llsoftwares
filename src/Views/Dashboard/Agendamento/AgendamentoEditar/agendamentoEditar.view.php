@@ -1,25 +1,39 @@
 <?php
 
+use Admin\Project\Auth\Class\UserManager;
 use Admin\Project\Controllers\AppointmentController;
 use Admin\Project\Controllers\ClientsControllers;
+
+$userManager = new UserManager();
 
 $appointmentController = new AppointmentController();
 $clientsController = new ClientsControllers();
 
 header("Cache-Control: no-cache, must-revalidate");
 
+if (!$userManager->hasUserToken()) {
+    header("Location: / ");
+}
+
 if(!isset($_GET['id'])){
     return;
 }
 
+if(isset($_POST['idCancel'])){
+    $appointmentController->deleteAppointments($_POST['idCancel']);
+}
+
 $agendamento = $appointmentController->getAppointmentById($_GET['id']);
+
+if(!$agendamento){
+    header("Location: /agendamento");
+}
+
 $clients = $clientsController->getClientsById($agendamento->ID_Cliente);
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])){
     try {
-        // Remove the var_dump or use error_log for debugging
-        // error_log($_POST['id_cliente']); // Use this instead of var_dump for debugging
-        
+
         $appointmentController
             ->setIdClient($_POST['id_cliente'])
             ->setAppointmentDate($_POST['data_agendamento'])
@@ -35,6 +49,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])){
         error_log($e->getMessage()); // Use error_log instead of var_dump
     }
 }
+
+
 
 ?>
 
@@ -70,7 +86,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])){
             <section class="form-section">
                 <h2 class="form-title">Detalhes do Agendamento</h2>
                 <?php if (isset($agendamento)): ?>
-                    <form method="POST" >
+                    <form  method="POST" >
                         <input type="hidden" name="id_agendamento" value="<?php echo $agendamento->ID_Agendamento; ?>">
                         <div class="form-row">
                             <div class="form-group">
@@ -144,7 +160,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])){
             </section>
         </div>
     </div>
-    <script src="../../../public/scripts/dashboard/schedulingEdit.js"></script>
+    <script src="../../../public/scripts/dashboard/edit/schedulingEdit.js"></script>
 </body>
 
 </html>
