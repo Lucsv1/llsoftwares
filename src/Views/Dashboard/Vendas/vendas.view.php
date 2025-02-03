@@ -218,7 +218,7 @@ $ordersAll = $orderController->listOrders();
                                         <td><?php echo $client->Nome_Completo; ?></td>
                                     <?php endforeach; ?>
                                     <td><?php echo date('d/m/Y', strtotime($orders->Data)); ?></td>
-                                    <td><?php echo $orders->Valor_Total; ?></td>
+                                    <td>R$ <?php echo $orders->Valor_Total; ?></td>
                                     <td class="action-buttons">
                                         <button class="btn-edit" data-id="<?php echo $orders->ID_Pedido; ?>">Detalhes</button>
                                     </td>
