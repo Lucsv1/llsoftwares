@@ -42,11 +42,7 @@ $mesAno = Carbon::now()->translatedFormat('F Y'); // Retorna "Outubro 2023"
 </head>
 
 <body>
-
-
-
     <div class="financial-dashboard">
-
         <div>
             <form action="/painel">
                 <button class="button_exit" type="submit">
@@ -90,49 +86,123 @@ $mesAno = Carbon::now()->translatedFormat('F Y'); // Retorna "Outubro 2023"
             </div>
         </div>
     </div>
-
     <script>
-        // Payment Method Chart
-        const paymentData = <?= json_encode(array_column($paymentMethodBreakdown, 'total_amount', 'Metodo_Pagamento')) ?>;
-        new Chart(document.getElementById('paymentMethodChart'), {
-            type: 'pie',
-            data: {
-                labels: Object.keys(paymentData),
-                datasets: [{
-                    data: Object.values(paymentData),
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-                }]
-            }
-        });
+        // Configurar WebSocket
+        const ws = new WebSocket('ws://localhost:3000');
 
-        // Top Products Chart
-        const topProductsData = <?= json_encode(array_column($topProducts, 'total_revenue', 'product_name')) ?>;
-        new Chart(document.getElementById('topProductsChart'), {
-            type: 'bar',
-            data: {
-                labels: Object.keys(topProductsData),
-                datasets: [{
-                    label: 'Receita',
-                    data: Object.values(topProductsData),
-                    backgroundColor: '#42A5F5'
-                }]
-            }
-        });
+        // Variáveis para armazenar os gráficos
+        let paymentMethodChart, topProductsChart, monthlyRevenueChart;
 
-        // Monthly Revenue Chart
-        const monthlyRevenueData = <?= json_encode(array_column($monthlyRevenueTrend, 'total_revenue', 'month')) ?>;
-        new Chart(document.getElementById('monthlyRevenueChart'), {
-            type: 'line',
-            data: {
-                labels: Object.keys(monthlyRevenueData),
-                datasets: [{
-                    label: 'Receita Mensal',
-                    data: Object.values(monthlyRevenueData),
-                    borderColor: '#66BB6A',
-                    fill: false
-                }]
+
+
+        // Função para inicializar os gráficos
+        function initializeCharts(data) {
+            // Payment Method Chart
+            const paymentCtx = document.getElementById('paymentMethodChart');
+            paymentMethodChart = new Chart(paymentCtx, {
+                type: 'pie',
+                data: {
+                    labels: data.paymentMethodBreakdown.map(item => item.Metodo_Pagamento),
+                    datasets: [{
+                        data: data.paymentMethodBreakdown.map(item => item.total_amount),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                    }]
+                }
+            });
+
+            // Top Products Chart
+            const productsCtx = document.getElementById('topProductsChart');
+            topProductsChart = new Chart(productsCtx, {
+                type: 'bar',
+                data: {
+                    labels: data.topProducts.map(item => item.product_name),
+                    datasets: [{
+                        label: 'Receita',
+                        data: data.topProducts.map(item => item.total_revenue),
+                        backgroundColor: '#42A5F5'
+                    }]
+                }
+            });
+
+            // Monthly Revenue Chart
+            const revenueCtx = document.getElementById('monthlyRevenueChart');
+            monthlyRevenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: data.monthlyRevenueTrend.map(item => item.month),
+                    datasets: [{
+                        label: 'Receita Mensal',
+                        data: data.monthlyRevenueTrend.map(item => item.total_revenue),
+                        borderColor: '#66BB6A',
+                        fill: false
+                    }]
+                }
+            });
+        }
+
+        // Função para atualizar os gráficos
+        function updateCharts(data) {
+
+            const formatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            });
+
+            // Atualizar cartões de resumo
+            const totalRevenue = parseFloat(data.totalRevenue[0].total_revenue || 0);
+            const totalExpenses = parseFloat(data.totalExpenses[0].total_expenses || 0);
+            const profit = totalRevenue - totalExpenses;
+
+            document.querySelector('.card:nth-child(1) p').textContent =
+                formatter.format(totalRevenue);
+
+            document.querySelector('.card:nth-child(2) p').textContent =
+                formatter.format(totalRevenue);
+
+            document.querySelector('.card:nth-child(3) p').textContent =
+                formatter.format(totalRevenue);
+
+            // Atualizar gráficos
+            if (paymentMethodChart) {
+                paymentMethodChart.data.labels = data.paymentMethodBreakdown.map(item => item.Metodo_Pagamento);
+                paymentMethodChart.data.datasets[0].data = data.paymentMethodBreakdown.map(item => parseFloat(item.total_amount || 0));
+                paymentMethodChart.update();
             }
-        });
+
+            if (topProductsChart) {
+                topProductsChart.data.labels = data.topProducts.map(item => item.product_name);
+                topProductsChart.data.datasets[0].data = data.topProducts.map(item => parseFloat(item.total_revenue || 0));
+                topProductsChart.update();
+            }
+
+            if (monthlyRevenueChart) {
+                monthlyRevenueChart.data.labels = data.monthlyRevenueTrend.map(item => item.month);
+                monthlyRevenueChart.data.datasets[0].data = data.monthlyRevenueTrend.map(item => parseFloat(item.total_revenue || 0));
+                monthlyRevenueChart.update();
+            }
+        }
+        // Evento de conexão do WebSocket
+        ws.onopen = () => {
+            console.log('Conectado ao servidor WebSocket');
+        };
+
+        // Evento de recebimento de dados
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            if (!paymentMethodChart) {
+                // Primeira vez - inicializar gráficos
+                initializeCharts(data);
+            } else {
+                // Atualizar gráficos existentes
+                updateCharts(data);
+            }
+        };
+
+        // Tratamento de erros
+        ws.onerror = (error) => {
+            console.error('Erro no WebSocket:', error);
+        };
     </script>
 </body>
 

@@ -16,6 +16,8 @@ services:
     #   TZ: America/Sao_Paulo
     volumes:
       - ./:/var/www/html  
+    depends_on:
+     - db
     restart: always
   
   db:

@@ -43,6 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Process each product
         foreach ($_POST['produtos'] as $produto) {
+
+
+
             if (
                 !isset($produto['id']) || !isset($produto['quantidade']) ||
                 empty($produto['id']) || empty($produto['quantidade'])
@@ -79,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Redirect or show success message
         header("Refresh:0");
-
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
@@ -148,11 +150,13 @@ $ordersAll = $orderController->listOrders();
                                     <option value="">Selecione o produto</option>
                                     <?php if (isset($products)): ?>
                                         <?php foreach ($products as $index => $product): ?>
-                                            <option value="<?php echo $product->ID_Produto; ?>"
-                                                data-price="<?php echo $product->Preco; ?>"
-                                                data-stock="<?php echo $product->Quantidade_Estoque; ?>">
-                                                <?php echo $product->Nome; ?>
-                                            </option>
+                                            <?php if ($product->Quantidade_Estoque !== 0): ?>
+                                                <option value="<?php echo $product->ID_Produto; ?>"
+                                                    data-price="<?php echo $product->Preco; ?>"
+                                                    data-stock="<?php echo $product->Quantidade_Estoque; ?>">
+                                                    <?php echo $product->Nome; ?>
+                                                </option>
+                                            <?php endif ?>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </select>
@@ -224,9 +228,9 @@ $ordersAll = $orderController->listOrders();
                                     <td class="action-buttons">
                                         <button class="btn-edit" data-id="<?php echo $orders->ID_Pedido; ?>">Detalhes</button>
                                     </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                     </tbody>
                 </table>
             </section>
